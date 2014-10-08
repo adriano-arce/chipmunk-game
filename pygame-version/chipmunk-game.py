@@ -1,9 +1,7 @@
-import pygame, sys
+import sys
 from pygame.locals import *
-from settings import *
-from grid import Grid
+from grid import *
 from chipmunk import Chipmunk
-
 
 
 def terminate():
@@ -28,6 +26,7 @@ def main():
     while True:
         screen.fill(BG_COLOUR)
         grid.draw(screen)
+        screen.blit(player.image, player.rect)
 
         # The event handling loop.
         for event in pygame.event.get():
