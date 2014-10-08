@@ -4,7 +4,7 @@ from settings import *
 
 def cell2pixel(cell_x, cell_y):
     """
-    Computes the left top pixel coordinate of the given cell.
+    Computes the top left pixel coordinate of the given cell.
     """
     left = MARGIN_WIDTH  + (CELL_SIDE + LINE_SIZE) * cell_x
     top  = MARGIN_HEIGHT + (CELL_SIDE + LINE_SIZE) * cell_y

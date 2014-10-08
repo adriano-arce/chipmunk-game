@@ -1,6 +1,7 @@
 from grid import *
 from random import randint
 
+
 class Chipmunk(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -9,10 +10,8 @@ class Chipmunk(pygame.sprite.Sprite):
         self.image.fill(RED)
 
         self.rect = self.image.get_rect()
-        (left, top) = cell2pixel(randint(1, GRID_HEIGHT - 1),
-                                 randint(1, GRID_WIDTH - 1))
-        self.rect.left = left
-        self.rect.top = top
+        self.rect.topleft = cell2pixel(randint(1, GRID_HEIGHT - 1),
+                                       randint(1, GRID_WIDTH - 1))
 
 
     def draw(self, screen):
