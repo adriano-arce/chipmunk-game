@@ -1,23 +1,41 @@
+from collections import namedtuple
+from pygame.constants import *
+
 # Set up the frame rate.
 FPS = 30
 
 # Each cell in the grid is a square with side length CELL_SIDE pixels.
-# (GRID_WIDTH, GRID_HEIGHT) is the size of the grid in cells.
-# (SCREEN_WIDTH, SCREEN_HEIGHT) is the size of the screen in pixels.
 CELL_SIDE = 30
 LINE_SIZE = 1
-(  GRID_WIDTH,   GRID_HEIGHT) = ( 24,  16)
-(SCREEN_WIDTH, SCREEN_HEIGHT) = (960, 600)
-(MARGIN_WIDTH, MARGIN_HEIGHT) = (
-    (SCREEN_WIDTH  - GRID_WIDTH  * (CELL_SIDE + LINE_SIZE)) // 2,
-    (SCREEN_HEIGHT - GRID_HEIGHT * (CELL_SIDE + LINE_SIZE)) // 2
+
+# (GRID.width, GRID.height) is the size of the grid in cells.
+# Each cell has a grid coordinate (x, y), where:
+#     0 <= x < GRID.width
+#     0 <= y < GRID.height
+# (SCREEN.width, SCREEN.height) is the size of the screen in pixels.
+Size = namedtuple("Size", "width, height")
+GRID   = Size(24, 16)
+SCREEN = Size(960, 600)
+MARGIN = Size(
+    (SCREEN.width  - GRID.width  * (CELL_SIDE + LINE_SIZE)) // 2,
+    (SCREEN.height - GRID.height * (CELL_SIDE + LINE_SIZE)) // 2
 )
-assert SCREEN_WIDTH % 2 == 0, "Screen width must be even."
-assert SCREEN_HEIGHT % 2 == 0, "Screen height must be even."
-assert GRID_WIDTH % 2 == 0, "Grid width must be even."
-assert GRID_HEIGHT % 2 == 0, "Grid height must be even."
-assert MARGIN_WIDTH > 0, "Grid is too wide for the screen."
-assert MARGIN_HEIGHT > 0, "Grid is too high for the screen."
+
+
+def cell2pixel(cell_coords):
+    """
+    Computes the top left pixel coordinate of the given cell.
+    """
+    left = MARGIN.width  + (CELL_SIDE + LINE_SIZE) * cell_coords[0]
+    top  = MARGIN.height + (CELL_SIDE + LINE_SIZE) * cell_coords[1]
+    return left, top
+
+assert SCREEN.width % 2 == 0, "Screen width must be even."
+assert SCREEN.height % 2 == 0, "Screen height must be even."
+assert GRID.width % 2 == 0, "Grid width must be even."
+assert GRID.height % 2 == 0, "Grid height must be even."
+assert MARGIN.width > 0, "Grid is too wide for the screen."
+assert MARGIN.height > 0, "Grid is too high for the screen."
 
 #             R    G    B
 WHITE     = (255, 255, 255)
@@ -28,3 +46,11 @@ RED       = (255,   0,   0)
 BG_COLOUR   = NAVY_BLUE
 LINE_COLOUR = DARK_GRAY
 CELL_COLOUR = WHITE
+
+# The directions.
+Direction = namedtuple("Direction", "name, keys, offset")
+RIGHT = Direction("right", (K_RIGHT, K_d), ( 1,  0))
+DOWN  = Direction( "down", ( K_DOWN, K_s), ( 0,  1))
+LEFT  = Direction( "left", ( K_LEFT, K_a), (-1,  0))
+UP    = Direction(   "up", (   K_UP, K_w), ( 0, -1))
+ALL_DIRS = (RIGHT, DOWN, LEFT, UP)
