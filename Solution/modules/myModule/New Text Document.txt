@@ -1,0 +1,9 @@
+function MyModule::create( %this )
+{
+
+}
+
+function MyModule::destory ( %this )
+{
+
+}
