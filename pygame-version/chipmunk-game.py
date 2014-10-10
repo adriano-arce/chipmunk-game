@@ -1,5 +1,6 @@
 import sys
 from chipmunk import *
+from acorn import Acorn
 
 
 def terminate():
@@ -19,7 +20,17 @@ def main():
     fps_clock = pygame.time.Clock()
     screen_surf = pygame.display.set_mode((SCREEN.width, SCREEN.height))
     pygame.display.set_caption("Chipmunk Game")
+
+    num_font = pygame.font.SysFont("consolas", 28)
+
+    chipmunks = pygame.sprite.Group()
+    acorns = pygame.sprite.Group()
+    Acorn.groups = acorns
+    Chipmunk.groups = chipmunks
+
     player = Chipmunk()
+    for acornNum in range(ACORN_LIMIT):
+        Acorn()
 
     # The main game loop.
     while True:
@@ -43,11 +54,19 @@ def main():
 
         # Update all the things.
         player.try_step()
+        for a in pygame.sprite.spritecollide(player, acorns, True):
+            player.acorn_count += 1
+            Acorn()
+        message = str.format("Acorns: {0}", player.acorn_count)
+        text = num_font.render(message, True, WHITE)
 
         # Draw all the things.
         screen_surf.fill(BG_COLOUR)
         draw_grid(screen_surf)
-        screen_surf.blit(player.image, player.rect)
+        chipmunks.draw(screen_surf)
+        acorns.draw(screen_surf)
+        screen_surf.blit(text, text.get_rect())
+
 
         # Render the screen.
         pygame.display.update()

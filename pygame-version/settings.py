@@ -4,10 +4,10 @@ from pygame.constants import *
 
 
 # Set up the frame rate.
-FPS = 30
+FPS = 25
 
 # Each cell in the grid is a square with side length CELL_SIDE pixels.
-CELL_SIDE = 30
+CELL_SIDE = 32
 LINE_SIZE = 1
 
 # (GRID.width, GRID.height) is the size of the grid in cells.
@@ -17,7 +17,7 @@ LINE_SIZE = 1
 # (SCREEN.width, SCREEN.height) is the size of the screen in pixels.
 Size = namedtuple("Size", "width, height")
 GRID   = Size(24, 16)
-SCREEN = Size(960, 600)
+SCREEN = Size(960, 640)
 MARGIN = Size(
     (SCREEN.width  - GRID.width  * (CELL_SIDE + LINE_SIZE)) // 2,
     (SCREEN.height - GRID.height * (CELL_SIDE + LINE_SIZE)) // 2
@@ -67,3 +67,6 @@ DOWN  = Direction( "down", ( K_DOWN, K_s), ( 0,  1))
 LEFT  = Direction( "left", ( K_LEFT, K_a), (-1,  0))
 UP    = Direction(   "up", (   K_UP, K_w), ( 0, -1))
 ALL_DIRS = (RIGHT, DOWN, LEFT, UP)
+
+# Acorn stuff.
+ACORN_LIMIT = 10

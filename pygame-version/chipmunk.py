@@ -4,7 +4,7 @@ from random import randint
 
 class Chipmunk(pygame.sprite.Sprite):
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.image = pygame.Surface((CELL_SIDE, CELL_SIDE))
         self.image.fill(RED)
@@ -14,6 +14,8 @@ class Chipmunk(pygame.sprite.Sprite):
                              randint(0, GRID.height - 1))
         self.rect = self.image.get_rect()
         self.move_to(self._cell_coords)
+
+        self.acorn_count = 0
 
     def move_to(self, new_cell_coords):
         """
