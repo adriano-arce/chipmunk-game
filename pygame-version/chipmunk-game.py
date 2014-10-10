@@ -36,14 +36,14 @@ def main():
                 else:
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
-                            player.is_pressed[direction] = True
+                            player.dir_stack.append(direction)
             elif event.type == KEYUP:
                 for direction in ALL_DIRS:
                     if event.key in direction.keys:
-                        player.is_pressed[direction] = False
+                        player.dir_stack.pop()
 
         # Update all the things.
-        player.take_step()
+        player.try_step()
 
         # Draw all the things.
         screen_surf.fill(BG_COLOUR)
