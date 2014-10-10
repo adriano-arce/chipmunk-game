@@ -1,7 +1,5 @@
 import sys
-
-from grid import *
-from chipmunk import Chipmunk
+from chipmunk import *
 
 
 def terminate():
@@ -21,7 +19,6 @@ def main():
     fps_clock = pygame.time.Clock()
     screen_surf = pygame.display.set_mode((SCREEN.width, SCREEN.height))
     pygame.display.set_caption("Chipmunk Game")
-    grid = Grid()
     player = Chipmunk()
 
     # The main game loop.
@@ -36,18 +33,20 @@ def main():
                 else:
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
-                            player.dir_stack.append(direction)
+                            # Enqueue the direction.
+                            player.dir_queue.insert(0, direction)
             elif event.type == KEYUP:
                 for direction in ALL_DIRS:
                     if event.key in direction.keys:
-                        player.dir_stack.pop()
+                        # Dequeue the direction.
+                        player.dir_queue.pop()
 
         # Update all the things.
         player.try_step()
 
         # Draw all the things.
         screen_surf.fill(BG_COLOUR)
-        grid.draw(screen_surf)
+        draw_grid(screen_surf)
         screen_surf.blit(player.image, player.rect)
 
         # Render the screen.

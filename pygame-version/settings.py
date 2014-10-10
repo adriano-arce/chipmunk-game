@@ -1,5 +1,7 @@
+import pygame
 from collections import namedtuple
 from pygame.constants import *
+
 
 # Set up the frame rate.
 FPS = 30
@@ -20,6 +22,17 @@ MARGIN = Size(
     (SCREEN.width  - GRID.width  * (CELL_SIDE + LINE_SIZE)) // 2,
     (SCREEN.height - GRID.height * (CELL_SIDE + LINE_SIZE)) // 2
 )
+
+
+def draw_grid(screen):
+    """
+    Draws the grid to the given screen.
+    """
+    for cell_x in range(GRID.width):
+        for cell_y in range(GRID.height):
+            (left, top) = cell2pixel((cell_x, cell_y))
+            pygame.draw.rect(screen, CELL_COLOUR,
+                             (left, top, CELL_SIDE, CELL_SIDE))
 
 
 def cell2pixel(cell_coords):
