@@ -7,7 +7,7 @@ from pygame.constants import *
 FPS = 25
 
 # Each cell in the grid is a square with side length CELL_SIDE pixels.
-CELL_SIDE = 32
+CELL_SIDE = 64
 LINE_SIZE = 1
 
 # (GRID.width, GRID.height) is the size of the grid in cells.
@@ -16,7 +16,7 @@ LINE_SIZE = 1
 #     0 <= y < GRID.height
 # (SCREEN.width, SCREEN.height) is the size of the screen in pixels.
 Size = namedtuple("Size", "width, height")
-GRID   = Size(24, 16)
+GRID   = Size(12, 8)
 SCREEN = Size(960, 640)
 MARGIN = Size(
     (SCREEN.width  - GRID.width  * (CELL_SIDE + LINE_SIZE)) // 2,

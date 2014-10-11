@@ -1,14 +1,28 @@
 from settings import *
 from random import randint
 from collections import deque
+from spritesheet import SpriteSheet
 
 
 class Chipmunk(pygame.sprite.Sprite):
+
+    ###############################
+    # Each patch is 64 by 64 px.  #
+    ###############################
+    #    UP0,    UP1, ...,    UP8 #
+    #  LEFT0,  LEFT1, ...,  LEFT8 #
+    #  DOWN0,  DOWN1, ...,  DOWN8 #
+    # RIGHT0, RIGHT1, ..., RIGHT8 #
+    ###############################
+    file_name = "images/fake-chipmunk.png"
+    patch_size = (64, 64)
+    patch_count = 9
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.image = pygame.Surface((CELL_SIDE, CELL_SIDE))
-        self.image.fill(RED)
+        self.sheet = SpriteSheet(Chipmunk.file_name, Chipmunk.patch_size)
+        self.patch_coords = (2, 0)  # Initially facing down.
+        self.image = self.sheet.get_patch(self.patch_coords)
 
         self.dir_queue = deque()
         self._cell_coords = (randint(0, GRID.width  - 1),
@@ -17,6 +31,9 @@ class Chipmunk(pygame.sprite.Sprite):
         self.move_to(self._cell_coords)
 
         self.acorn_count = 0
+
+
+
 
     def move_to(self, new_cell_coords):
         """
