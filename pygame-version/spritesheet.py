@@ -13,6 +13,7 @@ class SpriteSheet:
         top  = self.patch_size[1] * patch_coords[1]
         return left, top
 
+    # TODO: Consider caching all patches into a 2D-array.
     def get_patch(self, patch_coords):
         """
         Returns the requested patch image from the sprite sheet.

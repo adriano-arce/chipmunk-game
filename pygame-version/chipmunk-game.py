@@ -1,15 +1,5 @@
-import sys
 from chipmunk import *
 from acorn import Acorn
-
-
-def terminate():
-    """
-    Terminates the program.
-    """
-    pygame.quit()
-    sys.exit()
-
 
 def main():
     """
@@ -33,14 +23,15 @@ def main():
         Acorn()
 
     # The main game loop.
-    while True:
+    done = False
+    while not done:
         # The event handling loop.
         for event in pygame.event.get():
             if event.type == QUIT:
-                terminate()
+                done = True
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    terminate()
+                    done = True
                 else:
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
@@ -70,6 +61,9 @@ def main():
         # Render the screen.
         pygame.display.update()
         fps_clock.tick(FPS)
+
+    # Close the window on terminating the main game loop.
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
