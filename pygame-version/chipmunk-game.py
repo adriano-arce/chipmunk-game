@@ -45,12 +45,12 @@ def main():
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
                             # Enqueue the direction.
-                            player.dir_queue.insert(0, direction)
+                            player.dir_queue.appendleft(direction)
             elif event.type == KEYUP:
                 for direction in ALL_DIRS:
                     if event.key in direction.keys:
-                        # Dequeue the direction.
-                        player.dir_queue.pop()
+                        # Remove the direction. Not quite a dequeue.
+                        player.dir_queue.remove(direction)
 
         # Update all the things.
         player.try_step()
