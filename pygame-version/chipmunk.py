@@ -7,7 +7,7 @@ from spritesheet import SpriteSheet
 class Chipmunk(pygame.sprite.Sprite):
 
     ###############################
-    # Each patch is 64 by 64 px.  #
+    # Order matches ALL_DIRS.     #
     ###############################
     #    UP0,    UP1, ...,    UP8 #
     #  LEFT0,  LEFT1, ...,  LEFT8 #
@@ -15,13 +15,13 @@ class Chipmunk(pygame.sprite.Sprite):
     # RIGHT0, RIGHT1, ..., RIGHT8 #
     ###############################
     file_name = "images/fake-chipmunk.png"
-    patch_size = (64, 64)
-    patch_count = 9
+    patch_size = (64, 64)  # Each patch is 64 by 64 px.
+    cycle_len = 9          # Each cycle takes 9 patches to complete.
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.sheet = SpriteSheet(Chipmunk.file_name, Chipmunk.patch_size)
-        self.patch_coords = (2, 0)  # Initially facing down.
+        self.patch_coords = [0, 2]  # Initially facing down, at DOWN0.
         self.image = self.sheet.get_patch(self.patch_coords)
 
         self.dir_queue = deque()
@@ -32,8 +32,12 @@ class Chipmunk(pygame.sprite.Sprite):
 
         self.acorn_count = 0
 
-
-
+    def turn_to(self, new_dir):
+        """
+        Turns towards the given direction.
+        """
+        self.patch_coords[1] = new_dir.index
+        self.image = self.sheet.get_patch(self.patch_coords)
 
     def move_to(self, new_cell_coords):
         """
@@ -51,6 +55,7 @@ class Chipmunk(pygame.sprite.Sprite):
         """
         if self.dir_queue:  # The queue is nonempty.
             direction = self.dir_queue[0]  # Peek at the next direction.
+            self.turn_to(direction)
             new_x = self._cell_coords[0] + direction.offset[0]
             new_y = self._cell_coords[1] + direction.offset[1]
             self.move_to((new_x, new_y))

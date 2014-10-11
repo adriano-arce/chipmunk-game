@@ -49,7 +49,7 @@ def main():
             player.acorn_count += 1
             Acorn()
         message = str.format("Collected Acorns: {0}", player.acorn_count)
-        text = msg_font.render(message, True, WHITE)
+        text = msg_font.render(message, True, TEXT_COLOUR)
 
         # Draw all the things.
         screen_surf.fill(BG_COLOUR)

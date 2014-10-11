@@ -56,17 +56,21 @@ BLACK     = (  0,   0,   0)
 DARK_GRAY = ( 40,  40,  40)
 NAVY_BLUE = ( 60,  60, 100)
 RED       = (255,   0,   0)
+
+# The above colours shouldn't be directly used (private to this class).
+# Assign the colours to more descriptive names like the following.
 BG_COLOUR   = NAVY_BLUE
 LINE_COLOUR = DARK_GRAY
 CELL_COLOUR = WHITE
+TEXT_COLOUR = WHITE
 
 # The directions.
-Direction = namedtuple("Direction", "name, keys, offset")
-RIGHT = Direction("right", (K_RIGHT, K_d), ( 1,  0))
-DOWN  = Direction( "down", ( K_DOWN, K_s), ( 0,  1))
-LEFT  = Direction( "left", ( K_LEFT, K_a), (-1,  0))
-UP    = Direction(   "up", (   K_UP, K_w), ( 0, -1))
-ALL_DIRS = (RIGHT, DOWN, LEFT, UP)
+Direction = namedtuple("Direction", "index, keys, offset")
+UP    = Direction(0, (   K_UP, K_w), ( 0, -1))
+LEFT  = Direction(1, ( K_LEFT, K_a), (-1,  0))
+DOWN  = Direction(2, ( K_DOWN, K_s), ( 0,  1))
+RIGHT = Direction(3, (K_RIGHT, K_d), ( 1,  0))
+ALL_DIRS = (UP, LEFT, DOWN, RIGHT)
 
 # Acorn stuff.
 ACORN_LIMIT = 10
