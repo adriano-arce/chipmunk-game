@@ -1,5 +1,6 @@
 from settings import *
 
+
 class SpriteSheet:
     def __init__(self, file_name, patch_size):
         self.sheet = pygame.image.load(file_name).convert_alpha()
@@ -18,7 +19,6 @@ class SpriteSheet:
         """
         Returns the requested patch image from the sprite sheet.
         """
-
         # Create a new blank image.
         patch = pygame.Surface(self.patch_size)
         patch.fill(CELL_COLOUR)

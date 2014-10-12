@@ -41,7 +41,7 @@ def cell2pixel(cell_coords):
     """
     left = MARGIN.width  + (CELL_SIDE + LINE_SIZE) * cell_coords[0]
     top  = MARGIN.height + (CELL_SIDE + LINE_SIZE) * cell_coords[1]
-    return left, top
+    return [left, top]
 
 assert SCREEN.width % 2 == 0, "Screen width must be even."
 assert SCREEN.height % 2 == 0, "Screen height must be even."

@@ -44,7 +44,9 @@ def main():
                         player.dir_queue.remove(direction)
 
         # Update all the things.
-        player.try_step()
+        if player.dir_queue:  # The queue is nonempty.
+            player.animate_step(player.dir_queue[0],
+                                fps_clock, screen_surf, acorns, text)
         for a in pygame.sprite.spritecollide(player, acorns, True):
             player.acorn_count += 1
             Acorn()
@@ -52,6 +54,7 @@ def main():
         text = msg_font.render(message, True, TEXT_COLOUR)
 
         # Draw all the things.
+        # TODO: Encapsulate this for the mini loop.
         screen_surf.fill(BG_COLOUR)
         draw_grid(screen_surf)
         chipmunks.draw(screen_surf)
