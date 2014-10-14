@@ -1,4 +1,4 @@
-from settings import *
+from grid import *
 from random import randint
 
 
@@ -11,8 +11,15 @@ class Acorn(pygame.sprite.Sprite):
 
         self.image = Acorn.image.convert_alpha()
 
-        # TODO: What if two Acorns spawn in the same place?
-        self._cell_coords = (randint(0, GRID.width  - 1),
-                             randint(0, GRID.height - 1))
+        self._cell_coords = Grid.empty_cells.pop()
         self.rect = self.image.get_rect()
-        self.rect.topleft = cell2pixel(self._cell_coords)
+        self.rect.topleft = Grid.cell2pixel(self._cell_coords)
+
+    def remove(self, *groups):
+        """
+        Overrides the parent's remove method in order to keep track of
+        all empty cells.
+        """
+        Grid.empty_cells.insert(randint(0, len(Acorn.empty_cells)),
+                                self._cell_coords)
+        pygame.sprite.Sprite.remove(self, *groups)

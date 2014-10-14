@@ -1,5 +1,4 @@
-from settings import *
-from random import randint
+from grid import *
 from collections import deque
 from spritesheet import SpriteSheet
 
@@ -31,10 +30,9 @@ class Chipmunk(pygame.sprite.Sprite):
         self.image = self.sheet.get_patch(self.patch_coords)
 
         self.dir_queue = deque()
-        self._cell_coords = [randint(0, GRID.width  - 1),
-                             randint(0, GRID.height - 1)]
+        self._cell_coords = Grid.empty_cells.pop()
         self.rect = self.image.get_rect()
-        self.rect.topleft = cell2pixel(self._cell_coords)
+        self.rect.topleft = Grid.cell2pixel(self._cell_coords)
 
         self.acorn_count = 0
 
@@ -57,7 +55,7 @@ class Chipmunk(pygame.sprite.Sprite):
         new_cell_y = self._cell_coords[1] + direction.offset[1]
         new_cell_coords = [new_cell_x, new_cell_y]
         if 0 <= new_cell_x < GRID.width and 0 <= new_cell_y < GRID.height:
-            new_pixel_coords = cell2pixel(new_cell_coords)
+            new_pixel_coords = Grid.cell2pixel(new_cell_coords)
             pixel_coords = list(self.rect.topleft)
 
             # Prepare the base surface.

@@ -1,4 +1,3 @@
-import pygame
 from collections import namedtuple
 from pygame.constants import *
 
@@ -22,26 +21,6 @@ MARGIN = Size(
     (SCREEN.width  - GRID.width  * (CELL_SIDE + LINE_SIZE)) // 2,
     (SCREEN.height - GRID.height * (CELL_SIDE + LINE_SIZE)) // 2
 )
-
-
-def draw_grid(screen_surf):
-    """
-    Draws the grid to the given screen surface.
-    """
-    for cell_x in range(GRID.width):
-        for cell_y in range(GRID.height):
-            (left, top) = cell2pixel((cell_x, cell_y))
-            pygame.draw.rect(screen_surf, CELL_COLOUR,
-                             (left, top, CELL_SIDE, CELL_SIDE))
-
-
-def cell2pixel(cell_coords):
-    """
-    Computes the top left pixel coordinate of the given cell.
-    """
-    left = MARGIN.width  + (CELL_SIDE + LINE_SIZE) * cell_coords[0]
-    top  = MARGIN.height + (CELL_SIDE + LINE_SIZE) * cell_coords[1]
-    return [left, top]
 
 assert SCREEN.width % 2 == 0, "Screen width must be even."
 assert SCREEN.height % 2 == 0, "Screen height must be even."

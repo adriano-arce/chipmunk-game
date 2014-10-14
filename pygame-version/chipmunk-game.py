@@ -49,14 +49,14 @@ def main():
                         player.dir_queue.remove(direction)
 
         # Update all the things.
+        message = str.format("Collected Acorns: {0}", player.acorn_count)
+        text = msg_font.render(message, True, TEXT_COLOUR)
         if player.dir_queue:  # The queue is nonempty.
             player.animate_step(player.dir_queue[0],
                                 fps_clock, screen_surf, acorns, text)
         for a in pygame.sprite.spritecollide(player, acorns, True):
             player.acorn_count += 1
             Acorn()
-        message = str.format("Collected Acorns: {0}", player.acorn_count)
-        text = msg_font.render(message, True, TEXT_COLOUR)
 
         # Draw all the things.
         # TODO: Encapsulate this for the mini loop.
