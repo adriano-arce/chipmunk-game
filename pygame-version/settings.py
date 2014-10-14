@@ -4,10 +4,10 @@ from pygame.constants import *
 
 
 # Set up the frame rate.
-FPS = 25
+FPS = 60
 
 # Each cell in the grid is a square with side length CELL_SIDE pixels.
-CELL_SIDE = 64
+CELL_SIDE = 69
 LINE_SIZE = 1
 
 # (GRID.width, GRID.height) is the size of the grid in cells.
@@ -24,14 +24,14 @@ MARGIN = Size(
 )
 
 
-def draw_grid(screen):
+def draw_grid(screen_surf):
     """
-    Draws the grid to the given screen.
+    Draws the grid to the given screen surface.
     """
     for cell_x in range(GRID.width):
         for cell_y in range(GRID.height):
             (left, top) = cell2pixel((cell_x, cell_y))
-            pygame.draw.rect(screen, CELL_COLOUR,
+            pygame.draw.rect(screen_surf, CELL_COLOUR,
                              (left, top, CELL_SIDE, CELL_SIDE))
 
 

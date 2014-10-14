@@ -17,9 +17,11 @@ class Chipmunk(pygame.sprite.Sprite):
     file_name = "images/fake-chipmunk.png"
     patch_size = (64, 64)  # Each patch is 64 by 64 px.
     cycle_len = 9          # Each cycle takes 9 patches to complete.
-    speed = 5              # The patch travels at 5 pixels per frame.
+    speed = 7              # The patch travels at 7 pixels per frame.
     assert (CELL_SIDE + LINE_SIZE) % speed == 0,\
         "(CELL_SIDE + LINE_SIZE) must be evenly divisible by speed."
+    assert ((CELL_SIDE + LINE_SIZE) // speed) % (cycle_len + 1) == 0,\
+        "(CELL_SIDE + LINE_SIZE) // speed must be evenly divisible by (cycle_len + 1)."
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -57,6 +59,7 @@ class Chipmunk(pygame.sprite.Sprite):
         if 0 <= new_cell_x < GRID.width and 0 <= new_cell_y < GRID.height:
             new_pixel_coords = cell2pixel(new_cell_coords)
             pixel_coords = list(self.rect.topleft)
+
             # Prepare the base surface.
             screen_surf.fill(BG_COLOUR)
             draw_grid(screen_surf)
@@ -65,7 +68,8 @@ class Chipmunk(pygame.sprite.Sprite):
             base_surf = screen_surf.copy()
 
             # Mini game loop.
-            for i in range(0, CELL_SIDE, Chipmunk.speed):
+            print()
+            for i in range(0, CELL_SIDE + LINE_SIZE, Chipmunk.speed):
                 # The event handling loop.
                 # TODO: Check for quit.
 
@@ -73,6 +77,10 @@ class Chipmunk(pygame.sprite.Sprite):
                 pixel_coords[0] += direction.offset[0] * Chipmunk.speed
                 pixel_coords[1] += direction.offset[1] * Chipmunk.speed
                 self.rect.topleft = pixel_coords
+                self.patch_coords[0] = \
+                    (i // Chipmunk.speed) % self.cycle_len
+                print(self.patch_coords, end=" ")
+                self.image = self.sheet.get_patch(self.patch_coords)
 
                 # Draw all the things.
                 screen_surf.blit(base_surf, (0, 0))

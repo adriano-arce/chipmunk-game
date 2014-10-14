@@ -1,17 +1,22 @@
 from chipmunk import *
 from acorn import Acorn
 
+
 def main():
     """
     The entry point.
     """
     pygame.init()
 
-    fps_clock = pygame.time.Clock()
-    screen_surf = pygame.display.set_mode((SCREEN.width, SCREEN.height))
+    # Icon should be loaded before mode is set.
+    icon = pygame.image.load("images/fake-icon.png")
+    icon.set_colorkey(WHITE)
+    pygame.display.set_icon(icon)
+    screen_surf = pygame.display.set_mode(SCREEN)
     pygame.display.set_caption("Chipmunk Game")
 
     msg_font = pygame.font.SysFont("consolas", 28)
+    fps_clock = pygame.time.Clock()
 
     chipmunks = pygame.sprite.Group()
     acorns = pygame.sprite.Group()
