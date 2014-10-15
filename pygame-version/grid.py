@@ -15,7 +15,8 @@ def draw_grid(screen_surf):
 
 
 class Grid:
-    # ASSERT: empty_cells is always randomized. Popping is easy, inserting is hard.
+    # ASSERT: empty_cells is always randomized.
+    # Popping is easy, inserting is hard.
     empty_cells = [(x, y) for x in range(GRID.width)
                    for y in range(GRID.height)]
     shuffle(empty_cells)
@@ -28,4 +29,3 @@ class Grid:
         left = MARGIN.width  + (CELL_SIDE + LINE_SIZE) * cell_coords[0]
         top  = MARGIN.height + (CELL_SIDE + LINE_SIZE) * cell_coords[1]
         return [left, top]
-

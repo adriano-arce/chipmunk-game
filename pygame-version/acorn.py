@@ -15,11 +15,11 @@ class Acorn(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = Grid.cell2pixel(self._cell_coords)
 
-    def remove(self, *groups):
+    def kill(self):
         """
-        Overrides the parent's remove method in order to keep track of
+        Overrides the parent's kill method in order to keep track of
         all empty cells.
         """
-        Grid.empty_cells.insert(randint(0, len(Acorn.empty_cells)),
+        Grid.empty_cells.insert(randint(0, len(Grid.empty_cells)),
                                 self._cell_coords)
-        pygame.sprite.Sprite.remove(self, *groups)
+        pygame.sprite.Sprite.kill(self)
