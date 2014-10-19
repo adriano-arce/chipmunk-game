@@ -44,11 +44,11 @@ CELL_COLOUR = WHITE
 TEXT_COLOUR = WHITE
 
 # The directions.
-Direction = namedtuple("Direction", "index, keys, offset")
-UP    = Direction(0, (   K_UP, K_w), ( 0, -1))
-LEFT  = Direction(1, ( K_LEFT, K_a), (-1,  0))
-DOWN  = Direction(2, ( K_DOWN, K_s), ( 0,  1))
-RIGHT = Direction(3, (K_RIGHT, K_d), ( 1,  0))
+Direction = namedtuple("Direction", "index, keys, offset, abbrev")
+UP    = Direction(0, (   K_UP, K_w), ( 0, -1), "U")
+LEFT  = Direction(1, ( K_LEFT, K_a), (-1,  0), "L")
+DOWN  = Direction(2, ( K_DOWN, K_s), ( 0,  1), "D")
+RIGHT = Direction(3, (K_RIGHT, K_d), ( 1,  0), "R")
 ALL_DIRS = (UP, LEFT, DOWN, RIGHT)
 
 # Acorn stuff.

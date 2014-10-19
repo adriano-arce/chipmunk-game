@@ -28,15 +28,14 @@ def main():
         Acorn()
 
     # The main game loop.
-    done = False
-    while not done:
+    while True:
         # The event handling loop.
         for event in pygame.event.get():
             if event.type == QUIT:
-                done = True
+                return
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    done = True
+                    return
                 else:
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
@@ -59,7 +58,7 @@ def main():
             Acorn()
 
         # Draw all the things.
-        # TODO: Encapsulate this for the mini loop.
+        # TODO: Encapsulate this for the mini game loop.
         screen_surf.fill(BG_COLOUR)
         draw_grid(screen_surf)
         chipmunks.draw(screen_surf)
@@ -70,8 +69,10 @@ def main():
         pygame.display.update()
         fps_clock.tick(FPS)
 
-    # Close the window on terminating the main game loop.
-    pygame.quit()
+
 
 if __name__ == "__main__":
     main()
+
+    # Close the window on terminating the main game loop.
+    pygame.quit()

@@ -44,15 +44,15 @@ class Chipmunk(pygame.sprite.Sprite):
             self.patch_coords[1] = new_dir.index
             self.image = self.sheet.get_patch(self.patch_coords)
 
-    def animate_step(self, direction,
+    def animate_step(self, curr_dir,
                      fps_clock, screen_surf, acorns, text):
         """
         Animates a step towards the given direction in the queue.
         """
-        self.turn_to(direction)
+        self.turn_to(curr_dir)
 
-        new_cell_x = self._cell_coords[0] + direction.offset[0]
-        new_cell_y = self._cell_coords[1] + direction.offset[1]
+        new_cell_x = self._cell_coords[0] + curr_dir.offset[0]
+        new_cell_y = self._cell_coords[1] + curr_dir.offset[1]
         new_cell_coords = [new_cell_x, new_cell_y]
         if 0 <= new_cell_x < GRID.width and 0 <= new_cell_y < GRID.height:
             new_pixel_coords = Grid.cell2pixel(new_cell_coords)
@@ -66,18 +66,17 @@ class Chipmunk(pygame.sprite.Sprite):
             base_surf = screen_surf.copy()
 
             # Mini game loop.
-            print()
             for i in range(0, CELL_SIDE + LINE_SIZE, Chipmunk.speed):
+                print(" ".join([d.abbrev for d in self.dir_queue]))
                 # The event handling loop.
                 # TODO: Check for quit.
 
                 # Update all the things.
-                pixel_coords[0] += direction.offset[0] * Chipmunk.speed
-                pixel_coords[1] += direction.offset[1] * Chipmunk.speed
+                pixel_coords[0] += curr_dir.offset[0] * Chipmunk.speed
+                pixel_coords[1] += curr_dir.offset[1] * Chipmunk.speed
                 self.rect.topleft = pixel_coords
                 self.patch_coords[0] = \
                     (i // Chipmunk.speed) % self.cycle_len
-                print(self.patch_coords, end=" ")
                 self.image = self.sheet.get_patch(self.patch_coords)
 
                 # Draw all the things.
