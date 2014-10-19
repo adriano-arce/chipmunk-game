@@ -1,3 +1,4 @@
+from random import randint
 from chipmunk import *
 from acorn import Acorn
 
@@ -23,8 +24,11 @@ def main():
     Acorn.groups = acorns
     Chipmunk.groups = chipmunks
 
+    total_acorns = ACORN_INIT
+    acorn_timer = randint(MIN_ACORN_SPAWN * FPS,
+                          MAX_ACORN_SPAWN * FPS)
     player = Chipmunk()
-    for acornNum in range(ACORN_LIMIT):
+    for __ in range(ACORN_INIT):
         Acorn()
 
     # The main game loop.
@@ -50,12 +54,18 @@ def main():
         # Update all the things.
         message = str.format("Collected Acorns: {0}", player.acorn_count)
         text = msg_font.render(message, True, TEXT_COLOUR)
-        if player.dir_queue:  # The queue is nonempty.
-            player.animate_step(player.dir_queue[0],
-                                fps_clock, screen_surf, acorns, text)
-        for a in pygame.sprite.spritecollide(player, acorns, True):
+        player.update()
+        for __ in pygame.sprite.spritecollide(player, acorns, True):
             player.acorn_count += 1
-            Acorn()
+            total_acorns -= 1
+        if total_acorns <= ACORN_LIMIT:
+            if acorn_timer < 0:
+                Acorn()
+                total_acorns += 1
+                acorn_timer = randint(MIN_ACORN_SPAWN * FPS,
+                                      MAX_ACORN_SPAWN * FPS)
+            else:
+                acorn_timer -= 1
 
         # Draw all the things.
         # TODO: Encapsulate this for the mini game loop.
@@ -68,7 +78,6 @@ def main():
         # Render the screen.
         pygame.display.update()
         fps_clock.tick(FPS)
-
 
 
 if __name__ == "__main__":

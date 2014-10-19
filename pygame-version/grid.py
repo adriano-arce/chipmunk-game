@@ -28,4 +28,4 @@ class Grid:
         """
         left = MARGIN.width  + (CELL_SIDE + LINE_SIZE) * cell_coords[0]
         top  = MARGIN.height + (CELL_SIDE + LINE_SIZE) * cell_coords[1]
-        return [left, top]
+        return left, top

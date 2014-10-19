@@ -52,4 +52,7 @@ RIGHT = Direction(3, (K_RIGHT, K_d), ( 1,  0), "R")
 ALL_DIRS = (UP, LEFT, DOWN, RIGHT)
 
 # Acorn stuff.
+ACORN_INIT = 3
 ACORN_LIMIT = 10
+MIN_ACORN_SPAWN = 0.5
+MAX_ACORN_SPAWN = 1.5
