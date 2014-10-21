@@ -11,7 +11,7 @@ def main():
 
     # Icon should be loaded before mode is set.
     icon = pygame.image.load("images/fake-icon.png")
-    icon.set_colorkey(WHITE)
+    icon.set_colorkey(CELL_COLOUR)
     pygame.display.set_icon(icon)
     screen_surf = pygame.display.set_mode(SCREEN)
     pygame.display.set_caption("Chipmunk Game")
@@ -53,12 +53,12 @@ def main():
 
         # Update all the things.
         message = str.format("Collected Acorns: {0}", player.acorn_count)
-        text = msg_font.render(message, True, TEXT_COLOUR)
+        text = msg_font.render(message, True, FONT_COLOUR)
         player.update()
         for __ in pygame.sprite.spritecollide(player, acorns, True):
             player.acorn_count += 1
             total_acorns -= 1
-        if total_acorns <= ACORN_LIMIT:
+        if total_acorns < ACORN_LIMIT:
             if acorn_timer < 0:
                 Acorn()
                 total_acorns += 1
@@ -68,8 +68,7 @@ def main():
                 acorn_timer -= 1
 
         # Draw all the things.
-        # TODO: Encapsulate this for the mini game loop.
-        screen_surf.fill(BG_COLOUR)
+        screen_surf.fill(BKGD_COLOUR)
         draw_grid(screen_surf)
         chipmunks.draw(screen_surf)
         acorns.draw(screen_surf)

@@ -17,10 +17,10 @@ class Chipmunk(pygame.sprite.Sprite):
     patch_size = (64, 64)  # Each patch is 64 by 64 px.
     cycle_len = 9          # Each cycle takes 9 patches to complete.
     speed = 7              # The patch travels at 7 pixels per frame.
-    assert (CELL_SIDE + LINE_SIZE) % speed == 0,\
-        "(CELL_SIDE + LINE_SIZE) must be evenly divisible by speed."
-    assert ((CELL_SIDE + LINE_SIZE) // speed) % (cycle_len + 1) == 0,\
-        "(CELL_SIDE + LINE_SIZE) // speed must be evenly divisible by (cycle_len + 1)."
+    assert (CELL_SIDE + LINE_WIDTH) % speed == 0,\
+        "(CELL_SIDE + LINE_WIDTH) must be evenly divisible by speed."
+    assert ((CELL_SIDE + LINE_WIDTH) // speed) % (cycle_len + 1) == 0,\
+        "(CELL_SIDE + LINE_WIDTH) // speed must be evenly divisible by (cycle_len + 1)."
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self, self.groups)

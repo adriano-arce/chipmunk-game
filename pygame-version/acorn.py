@@ -17,8 +17,7 @@ class Acorn(pygame.sprite.Sprite):
 
     def kill(self):
         """
-        Overrides the parent's kill method in order to keep track of
-        all empty cells.
+        Insert the acorn's empty cell before killing it.
         """
         Grid.empty_cells.insert(randint(0, len(Grid.empty_cells)),
                                 self._cell_coords)

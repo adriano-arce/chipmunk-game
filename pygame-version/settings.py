@@ -7,7 +7,7 @@ FPS = 60
 
 # Each cell in the grid is a square with side length CELL_SIDE pixels.
 CELL_SIDE = 69
-LINE_SIZE = 1
+LINE_WIDTH = 1
 
 # (GRID.width, GRID.height) is the size of the grid in cells.
 # Each cell has a grid coordinate (x, y), where:
@@ -18,8 +18,8 @@ Size = namedtuple("Size", "width, height")
 GRID   = Size(12, 8)
 SCREEN = Size(960, 640)
 MARGIN = Size(
-    (SCREEN.width  - GRID.width  * (CELL_SIDE + LINE_SIZE)) // 2,
-    (SCREEN.height - GRID.height * (CELL_SIDE + LINE_SIZE)) // 2
+    (SCREEN.width  - GRID.width  * (CELL_SIDE + LINE_WIDTH)) // 2,
+    (SCREEN.height - GRID.height * (CELL_SIDE + LINE_WIDTH)) // 2
 )
 
 assert SCREEN.width % 2 == 0, "Screen width must be even."
@@ -38,10 +38,10 @@ RED       = (255,   0,   0)
 
 # The above colours shouldn't be directly used (private to this class).
 # Assign the colours to more descriptive names like the following.
-BG_COLOUR   = NAVY_BLUE
+BKGD_COLOUR = NAVY_BLUE
 LINE_COLOUR = DARK_GRAY
 CELL_COLOUR = WHITE
-TEXT_COLOUR = WHITE
+FONT_COLOUR = WHITE
 
 # The directions.
 Direction = namedtuple("Direction", "index, keys, offset, abbrev")
