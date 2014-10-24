@@ -16,8 +16,10 @@ class Acorn(pygame.sprite.Sprite):
         self.rect.topleft = Grid.cell2pixel(self._cell_coords)
 
     def kill(self):
-        """
-        Insert the acorn's empty cell before killing it.
+        """Inserts the acorn's empty cell before killing it.
+
+        Note:
+            This gets called by pygame.sprite.spritecollide().
         """
         Grid.empty_cells.insert(randint(0, len(Grid.empty_cells)),
                                 self._cell_coords)

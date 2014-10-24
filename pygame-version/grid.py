@@ -4,9 +4,7 @@ from random import shuffle
 
 
 def draw_grid(screen_surf):
-    """
-    Draws the grid to the given screen surface.
-    """
+    """Draws the grid to the given screen surface."""
     for cell_x in range(GRID.width):
         for cell_y in range(GRID.height):
             (left, top) = Grid.cell2pixel((cell_x, cell_y))
@@ -14,7 +12,7 @@ def draw_grid(screen_surf):
                              (left, top, CELL_SIDE, CELL_SIDE))
 
 
-class Grid:
+class Grid(object):
     # ASSERT: empty_cells is always randomized.
     # Popping is easy, inserting is hard.
     empty_cells = [(x, y) for x in range(GRID.width)

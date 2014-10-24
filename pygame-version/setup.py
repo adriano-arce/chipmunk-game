@@ -11,4 +11,6 @@ from distutils.core import setup
 
 
 data_files = [('images', glob('images/*.*'))]
-setup(console=['chipmunk-game.py'], data_files = data_files)
+setup(console=['chipmunk-game.py'], data_files=data_files)
+
+__all__ = ["py2exe"]

@@ -4,9 +4,7 @@ from acorn import Acorn
 
 
 def main():
-    """
-    The entry point.
-    """
+    """The main entry point."""
     pygame.init()
 
     # Icon should be loaded before mode is set.
@@ -25,8 +23,7 @@ def main():
     Chipmunk.groups = chipmunks
 
     total_acorns = ACORN_INIT
-    acorn_timer = randint(MIN_ACORN_SPAWN * FPS,
-                          MAX_ACORN_SPAWN * FPS)
+    acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
     player = Chipmunk()
     for __ in range(ACORN_INIT):
         Acorn()
@@ -52,7 +49,7 @@ def main():
                         player.dir_queue.remove(direction)
 
         # Update all the things.
-        message = str.format("Collected Acorns: {0}", player.acorn_count)
+        message = "Collected Acorns: {0}".format(player.acorn_count)
         text = msg_font.render(message, True, FONT_COLOUR)
         player.update()
         for __ in pygame.sprite.spritecollide(player, acorns, True):
