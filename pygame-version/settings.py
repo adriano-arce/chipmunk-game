@@ -30,18 +30,19 @@ assert MARGIN.width > 0, "Grid is too wide for the screen."
 assert MARGIN.height > 0, "Grid is too high for the screen."
 
 #             R    G    B
-WHITE     = (255, 255, 255)
-BLACK     = (  0,   0,   0)
-DARK_GRAY = ( 40,  40,  40)
-NAVY_BLUE = ( 60,  60, 100)
-RED       = (255,   0,   0)
+white     = (255, 255, 255)
+black     = (  0,   0,   0)
+dark_gray = ( 40,  40,  40)
+navy_blue = ( 60,  60, 100)
+red       = (255,   0,   0)
 
 # The above colours shouldn't be directly used (private to this class).
 # Assign the colours to more descriptive names like the following.
-BKGD_COLOUR = NAVY_BLUE
-LINE_COLOUR = DARK_GRAY
-CELL_COLOUR = WHITE
-FONT_COLOUR = WHITE
+BKGD_COLOUR = navy_blue
+LINE_COLOUR = dark_gray
+CELL_COLOUR = white
+FONT_COLOUR = white
+NEST_COLOUR = red
 
 # The directions.
 Direction = namedtuple("Direction", "index, keys, offset, abbrev")

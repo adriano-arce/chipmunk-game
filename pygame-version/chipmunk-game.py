@@ -1,6 +1,7 @@
 from random import randint
 from chipmunk import *
 from acorn import Acorn
+from nest import Nest
 
 
 def main():
@@ -17,14 +18,16 @@ def main():
     msg_font = pygame.font.SysFont("consolas", 28)
     fps_clock = pygame.time.Clock()
 
-    chipmunks = pygame.sprite.Group()
-    acorns = pygame.sprite.Group()
-    Acorn.groups = acorns
+    chipmunks = pygame.sprite.RenderUpdates()
+    acorns = pygame.sprite.RenderUpdates()
+    nests = pygame.sprite.RenderUpdates()
     Chipmunk.groups = chipmunks
+    Acorn.groups = acorns
+    Nest.groups = nests
 
     total_acorns = ACORN_INIT
     acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-    player = Chipmunk()
+    player = Chipmunk(msg_font)
     for __ in range(ACORN_INIT):
         Acorn()
 
@@ -49,8 +52,6 @@ def main():
                         player.dir_queue.remove(direction)
 
         # Update all the things.
-        message = "Collected Acorns: {0}".format(player.acorn_count)
-        text = msg_font.render(message, True, FONT_COLOUR)
         player.update()
         for __ in pygame.sprite.spritecollide(player, acorns, True):
             player.acorn_count += 1
@@ -63,13 +64,20 @@ def main():
                                       MAX_ACORN_SPAWN * FPS)
             else:
                 acorn_timer -= 1
+        for nest in pygame.sprite.spritecollide(player, nests, False):
+            nest.acorn_count += player.acorn_count
+            player.acorn_count = 0
+            nest.update()
+        message = "Collected Acorns: {0}".format(player.acorn_count)
+        text_surf = msg_font.render(message, True, FONT_COLOUR)
 
         # Draw all the things.
         screen_surf.fill(BKGD_COLOUR)
         draw_grid(screen_surf)
+        nests.draw(screen_surf)  # Draw this before the chipmunks.
         chipmunks.draw(screen_surf)
         acorns.draw(screen_surf)
-        screen_surf.blit(text, text.get_rect())
+        screen_surf.blit(text_surf, text_surf.get_rect())
 
         # Render the screen.
         pygame.display.update()

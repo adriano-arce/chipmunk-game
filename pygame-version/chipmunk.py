@@ -1,5 +1,6 @@
 from grid import *
 from collections import deque
+from nest import Nest
 from spritesheet import SpriteSheet
 
 
@@ -22,7 +23,7 @@ class Chipmunk(pygame.sprite.Sprite):
     assert ((CELL_SIDE + LINE_WIDTH) // speed) % (cycle_len + 1) == 0,\
         "(CELL_SIDE + LINE_WIDTH) // speed must be divisible by cycle_len + 1."
 
-    def __init__(self):
+    def __init__(self, num_font):
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.sheet = SpriteSheet(Chipmunk.file_name, Chipmunk.patch_size)
@@ -38,6 +39,7 @@ class Chipmunk(pygame.sprite.Sprite):
         self.rect.topleft = Grid.cell2pixel(self._cell_coords)
 
         self.acorn_count = 0
+        self.nest = Nest(num_font)
 
     def turn_to(self, new_dir):
         """Turns towards the given direction, if necessary."""
