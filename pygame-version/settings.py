@@ -5,6 +5,10 @@ from pygame.constants import *
 # Set up the frame rate.
 FPS = 60
 
+# Set up the custom user events.
+SECOND_EVENT = USEREVENT + 1
+GAME_LENGTH = 3 * 60  # 3 minutes long.
+
 # Each cell in the grid is a square with side length CELL_SIDE pixels.
 CELL_SIDE = 69
 LINE_WIDTH = 1

@@ -15,7 +15,7 @@ def main():
     screen_surf = pygame.display.set_mode(SCREEN)
     pygame.display.set_caption("Chipmunk Game")
 
-    msg_font = pygame.font.SysFont("consolas", 28)
+    basic_font = pygame.font.SysFont("consolas", 28)
     fps_clock = pygame.time.Clock()
 
     chipmunks = pygame.sprite.RenderUpdates()
@@ -27,19 +27,24 @@ def main():
 
     total_acorns = ACORN_INIT
     acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-    player = Chipmunk(msg_font)
+    player = Chipmunk(basic_font)
     for __ in range(ACORN_INIT):
         Acorn()
+
+    seconds_left = GAME_LENGTH
+    pygame.time.set_timer(SECOND_EVENT, 1000)
 
     # The main game loop.
     while True:
         # The event handling loop.
         for event in pygame.event.get():
             if event.type == QUIT:
-                return
+                return None
+            elif event.type == SECOND_EVENT:
+                seconds_left -= 1
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    return
+                    return screen_surf, player.nest.acorn_count
                 else:
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
@@ -52,6 +57,8 @@ def main():
                         player.dir_queue.remove(direction)
 
         # Update all the things.
+        if seconds_left == 0:
+            return screen_surf, player.nest.acorn_count
         player.update()
         for __ in pygame.sprite.spritecollide(player, acorns, True):
             player.acorn_count += 1
@@ -68,8 +75,13 @@ def main():
             nest.acorn_count += player.acorn_count
             player.acorn_count = 0
             nest.update()
-        message = "Collected Acorns: {0}".format(player.acorn_count)
-        text_surf = msg_font.render(message, True, FONT_COLOUR)
+        acorn_msg = "Collected Acorns: {}".format(player.acorn_count)
+        acorn_surf = basic_font.render(acorn_msg, True, FONT_COLOUR)
+        minutes, seconds = divmod(seconds_left, 60)
+        timer_msg = "{}:{:02d}".format(minutes, seconds)
+        timer_surf = basic_font.render(timer_msg, True, FONT_COLOUR)
+        timer_rect = timer_surf.get_rect()
+        timer_rect.topright = (SCREEN.width, 0)
 
         # Draw all the things.
         screen_surf.fill(BKGD_COLOUR)
@@ -77,15 +89,45 @@ def main():
         nests.draw(screen_surf)  # Draw this before the chipmunks.
         chipmunks.draw(screen_surf)
         acorns.draw(screen_surf)
-        screen_surf.blit(text_surf, text_surf.get_rect())
+        screen_surf.blit(acorn_surf, acorn_surf.get_rect())
+        screen_surf.blit(timer_surf, timer_rect)
 
         # Render the screen.
         pygame.display.update()
         fps_clock.tick(FPS)
 
 
+def end_game(screen_surf, acorn_count):
+    """The end game screen."""
+    # Update all the things.
+    end_font = pygame.font.SysFont("consolas", 48)
+    message = "Game over! Final score: {0}".format(acorn_count)
+    text_surf = end_font.render(message, True, FONT_COLOUR)
+    text_rect = text_surf.get_rect()
+    text_rect.center = (SCREEN.width // 2, SCREEN.height // 2)
+
+    # Draw all the things.
+    screen_surf.fill(BKGD_COLOUR)
+    screen_surf.blit(text_surf, text_rect)
+
+    # Render the screen.
+    pygame.display.update()
+
+    # The main game loop.
+    while True:
+        # The event handling loop.
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                return
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    return
+
 if __name__ == "__main__":
-    main()
+    output = main()
+    if output is not None:
+        (screen, score) = output
+        end_game(screen, score)
 
     # Close the window on terminating the main game loop.
     pygame.quit()
