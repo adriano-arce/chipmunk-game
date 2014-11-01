@@ -18,10 +18,10 @@ class Chipmunk(pygame.sprite.Sprite):
     patch_size = (64, 64)  # Each patch is 64 by 64 px.
     cycle_len = 9          # Each cycle takes 9 patches to complete.
     speed = 7              # The patch travels at 7 pixels per frame.
-    assert (CELL_SIDE + LINE_WIDTH) % speed == 0,\
-        "CELL_SIDE + LINE_WIDTH must be evenly divisible by speed."
-    assert ((CELL_SIDE + LINE_WIDTH) // speed) % (cycle_len + 1) == 0,\
-        "(CELL_SIDE + LINE_WIDTH) // speed must be divisible by cycle_len + 1."
+    assert CELL_SIDE % speed == 0,\
+        "CELL_SIDE must be evenly divisible by speed."
+    assert (CELL_SIDE // speed) % (cycle_len + 1) == 0,\
+        "CELL_SIDE // speed must be divisible by cycle_len + 1."
 
     def __init__(self, count_font):
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -46,6 +46,10 @@ class Chipmunk(pygame.sprite.Sprite):
         if self.patch_coords[1] != new_dir.index:
             self.patch_coords[1] = new_dir.index
             self.image = self.sheet.get_patch(self.patch_coords)
+
+    def can_move(self, direction):
+        """Returns True iff the chipmunk can move in the given direction."""
+        pass
 
     def update(self):
         """Updates the chipmunk."""

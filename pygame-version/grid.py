@@ -24,6 +24,6 @@ class Grid(object):
         """
         Computes the left top pixel coordinate of the given cell.
         """
-        left = MARGIN.width  + (CELL_SIDE + LINE_WIDTH) * cell_coords[0]
-        top  = MARGIN.height + (CELL_SIDE + LINE_WIDTH) * cell_coords[1]
+        left = MARGIN.width  + CELL_SIDE * cell_coords[0]
+        top  = MARGIN.height + CELL_SIDE * cell_coords[1]
         return left, top

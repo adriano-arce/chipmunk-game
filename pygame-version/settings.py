@@ -10,8 +10,7 @@ SECOND_EVENT = USEREVENT + 1
 GAME_LENGTH = 3 * 60  # 3 minutes long.
 
 # Each cell in the grid is a square with side length CELL_SIDE pixels.
-CELL_SIDE = 69
-LINE_WIDTH = 1
+CELL_SIDE = 70
 
 # (GRID.width, GRID.height) is the size of the grid in cells.
 # Each cell has a grid coordinate (x, y), where:
@@ -22,8 +21,8 @@ Size = namedtuple("Size", "width, height")
 GRID   = Size(12, 8)
 SCREEN = Size(960, 640)
 MARGIN = Size(
-    (SCREEN.width  - GRID.width  * (CELL_SIDE + LINE_WIDTH)) // 2,
-    (SCREEN.height - GRID.height * (CELL_SIDE + LINE_WIDTH)) // 2
+    (SCREEN.width  - GRID.width  * CELL_SIDE) // 2,
+    (SCREEN.height - GRID.height * CELL_SIDE) // 2
 )
 
 assert SCREEN.width % 2 == 0, "Screen width must be even."
