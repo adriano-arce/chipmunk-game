@@ -1,4 +1,5 @@
-from grid import *
+from tile import *
+from grid import Grid
 
 
 class Nest(pygame.sprite.Sprite):
@@ -8,12 +9,12 @@ class Nest(pygame.sprite.Sprite):
         self.acorn_count = 0
         self.num_font = count_font
 
-        self.image = pygame.Surface((CELL_SIDE, CELL_SIDE))
+        self.image = pygame.Surface(TILE)
         self.update()
 
-        self._cell_coords = Grid.empty_cells.pop()
+        self._tile_pos = Grid.empty_tiles.pop()
         self.rect = self.image.get_rect()
-        self.rect.topleft = Grid.cell2pixel(self._cell_coords)
+        self.rect.topleft = BaseTile.tile2pixel(self._tile_pos)
 
     def update(self):
         """Updates the nest's acorn count."""

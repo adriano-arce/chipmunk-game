@@ -9,22 +9,20 @@ FPS = 60
 SECOND_EVENT = USEREVENT + 1
 GAME_LENGTH = 3 * 60  # 3 minutes long.
 
-# Each cell in the grid is a square with side length CELL_SIDE pixels.
-CELL_SIDE = 70
-
-# (GRID.width, GRID.height) is the size of the grid in cells.
-# Each cell has a grid coordinate (x, y), where:
+# (SCREEN.width, SCREEN.height) is the size of the screen in pixels.
+# (GRID.width, GRID.height) is the size of the grid in tiles.
+# Each tile has a position (x, y), where:
 #     0 <= x < GRID.width
 #     0 <= y < GRID.height
-# (SCREEN.width, SCREEN.height) is the size of the screen in pixels.
+# (TILE.width, TILE.height) is the size of each tile in pixels.
 Size = namedtuple("Size", "width, height")
-GRID   = Size(12, 8)
 SCREEN = Size(960, 640)
+GRID   = Size(12, 8)
+TILE   = Size(70, 70)
 MARGIN = Size(
-    (SCREEN.width  - GRID.width  * CELL_SIDE) // 2,
-    (SCREEN.height - GRID.height * CELL_SIDE) // 2
+    (SCREEN.width  - GRID.width  * TILE.width) // 2,
+    (SCREEN.height - GRID.height * TILE.height) // 2
 )
-
 assert SCREEN.width % 2 == 0, "Screen width must be even."
 assert SCREEN.height % 2 == 0, "Screen height must be even."
 assert GRID.width % 2 == 0, "Grid width must be even."
@@ -32,18 +30,31 @@ assert GRID.height % 2 == 0, "Grid height must be even."
 assert MARGIN.width > 0, "Grid is too wide for the screen."
 assert MARGIN.height > 0, "Grid is too high for the screen."
 
+# The grid's tile map. Each W is a wall.
+TILE_MAP = [
+    "WWWWWWWWWWWW",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "WWWWWWWWWWWW"
+]
+assert len(TILE_MAP) == GRID.height, "Map and grid heights must match."
+assert len(TILE_MAP[0]) == GRID.width, "Map and grid widths must match."
+
 #             R    G    B
 white     = (255, 255, 255)
-black     = (  0,   0,   0)
-dark_gray = ( 40,  40,  40)
+dark_gray = (100, 100, 100)
 navy_blue = ( 60,  60, 100)
 red       = (255,   0,   0)
 
 # The above colours shouldn't be directly used (private to this class).
 # Assign the colours to more descriptive names like the following.
-BKGD_COLOUR = navy_blue
-LINE_COLOUR = dark_gray
-CELL_COLOUR = white
+BKGD_COLOUR = dark_gray
+WALL_COLOUR = navy_blue
+FLOOR_COLOUR = white
 FONT_COLOUR = white
 NEST_COLOUR = red
 

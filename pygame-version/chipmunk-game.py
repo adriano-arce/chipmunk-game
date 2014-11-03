@@ -1,7 +1,15 @@
-from random import randint
+from random import randint, choice
 from chipmunk import *
 from acorn import Acorn
 from nest import Nest
+from tile import Wall, Floor
+
+
+def get_empty_tile_pos(empty_tiles):
+    rand_sprite = choice(empty_tiles.sprites())
+    rand_pos = rand_sprite.tile_pos
+    rand_sprite.kill()
+    return rand_pos
 
 
 def main():
@@ -10,7 +18,7 @@ def main():
 
     # Icon should be loaded before mode is set.
     icon = pygame.image.load("images/fake-icon.png")
-    icon.set_colorkey(CELL_COLOUR)
+    icon.set_colorkey(FLOOR_COLOUR)
     pygame.display.set_icon(icon)
     screen_surf = pygame.display.set_mode(SCREEN)
     pygame.display.set_caption("Chipmunk Game")
@@ -18,13 +26,28 @@ def main():
     basic_font = pygame.font.SysFont("consolas", 28)
     fps_clock = pygame.time.Clock()
 
+    # Set up the sprite groups.
+    wall_tiles = pygame.sprite.RenderUpdates()
+    floor_tiles = pygame.sprite.RenderUpdates()
+    all_tiles = pygame.sprite.RenderUpdates()
     chipmunks = pygame.sprite.RenderUpdates()
     acorns = pygame.sprite.RenderUpdates()
     nests = pygame.sprite.RenderUpdates()
+    Wall.groups = wall_tiles, all_tiles
+    Floor.groups = floor_tiles, all_tiles
     Chipmunk.groups = chipmunks
     Acorn.groups = acorns
     Nest.groups = nests
 
+    # Set up the walls.
+    for y, row in enumerate(TILE_MAP):
+        for x, col in enumerate(row):
+            if col == "W":
+                Wall((x, y))
+            elif col == " ":
+                Floor((x, y))
+
+    # Set up acorn and player stuff.
     total_acorns = ACORN_INIT
     acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
     player = Chipmunk(basic_font)
@@ -34,7 +57,7 @@ def main():
     seconds_left = GAME_LENGTH
     pygame.time.set_timer(SECOND_EVENT, 1000)
 
-    # The main game loop.
+    # The main game loop. Each iteration of this loop is called a frame.
     while True:
         # The event handling loop.
         for event in pygame.event.get():
@@ -85,8 +108,8 @@ def main():
 
         # Draw all the things.
         screen_surf.fill(BKGD_COLOUR)
-        draw_grid(screen_surf)
-        nests.draw(screen_surf)  # Draw this before the chipmunks.
+        all_tiles.draw(screen_surf)  # Draw tiles before other sprites.
+        nests.draw(screen_surf)  # Draw nests before chipmunks.
         chipmunks.draw(screen_surf)
         acorns.draw(screen_surf)
         screen_surf.blit(acorn_surf, acorn_surf.get_rect())

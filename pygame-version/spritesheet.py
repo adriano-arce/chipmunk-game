@@ -8,34 +8,34 @@ class SpriteSheet(object):
         self.patch_size = patch_size
         self._patch_dict = {}
 
-    def patch2pixel(self, patch_coords):
-        """Returns the top left pixel coordinate of the given patch."""
-        left = self.patch_size[0] * patch_coords[0]
-        top  = self.patch_size[1] * patch_coords[1]
+    def patch2pixel(self, patch_pos):
+        """Returns the top left pixel position of the given patch."""
+        left = self.patch_size[0] * patch_pos[0]
+        top  = self.patch_size[1] * patch_pos[1]
         return left, top
 
-    def get_patch(self, patch_coords):
+    def get_patch(self, patch_pos):
         """Returns the requested patch image from the sprite sheet."""
         # Lists aren't hashable, so convert to an immutable tuple.
-        patch_coords = tuple(patch_coords)
+        patch_pos = tuple(patch_pos)
 
         # Don't do extra work.
-        if patch_coords in self._patch_dict:
-            return self._patch_dict[patch_coords]
+        if patch_pos in self._patch_dict:
+            return self._patch_dict[patch_pos]
 
         # Create a new blank image.
         patch = pygame.Surface(self.patch_size)
-        patch.fill(CELL_COLOUR)
-        patch.set_colorkey(CELL_COLOUR)
+        patch.fill(FLOOR_COLOUR)
+        patch.set_colorkey(FLOOR_COLOUR)
 
         # Copy the patch from the large sheet onto the smaller image.
         patch.blit(self.sheet, (0, 0),
-                   (self.patch2pixel(patch_coords), self.patch_size))
+                   (self.patch2pixel(patch_pos), self.patch_size))
 
         # Set the transparent colour and scale to fit.
-        patch.set_colorkey(CELL_COLOUR)
-        patch = pygame.transform.scale(patch, (CELL_SIDE, CELL_SIDE))
+        patch.set_colorkey(FLOOR_COLOUR)
+        patch = pygame.transform.scale(patch, TILE)
 
         # Cache and return the patch.
-        self._patch_dict[patch_coords] = patch
+        self._patch_dict[patch_pos] = patch
         return patch
