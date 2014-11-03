@@ -1,15 +1,11 @@
-from random import randint, choice
+from random import randint
 from chipmunk import *
 from acorn import Acorn
 from nest import Nest
 from tile import Wall, Floor
 
 
-def get_empty_tile_pos(empty_tiles):
-    rand_sprite = choice(empty_tiles.sprites())
-    rand_pos = rand_sprite.tile_pos
-    rand_sprite.kill()
-    return rand_pos
+
 
 
 def main():
@@ -33,13 +29,27 @@ def main():
     chipmunks = pygame.sprite.RenderUpdates()
     acorns = pygame.sprite.RenderUpdates()
     nests = pygame.sprite.RenderUpdates()
+    all_others = pygame.sprite.RenderUpdates()
     Wall.groups = wall_tiles, all_tiles
     Floor.groups = floor_tiles, all_tiles
-    Chipmunk.groups = chipmunks
-    Acorn.groups = acorns
-    Nest.groups = nests
+    Chipmunk.groups = chipmunks, all_others
+    Acorn.groups = acorns, all_others
+    Nest.groups = nests, all_others
 
-    # Set up the walls.
+    def place_rect(rect):
+        rect.topleft = (
+            MARGIN.width  + randint(0, (GRID.width  - 1) * TILE.width),
+            MARGIN.height + randint(0, (GRID.height - 1) * TILE.height)
+        )
+        other_rects = [s.rect for s in all_others.sprites()]
+        while rect.collidelist(other_rects) > -1:
+            rect.topleft = (
+                MARGIN.width  + randint(0, (GRID.width  - 1) * TILE.width),
+                MARGIN.height + randint(0, (GRID.height - 1) * TILE.height)
+            )
+        return rect
+
+    # Parse the tile map.
     for y, row in enumerate(TILE_MAP):
         for x, col in enumerate(row):
             if col == "W":
@@ -52,7 +62,7 @@ def main():
     acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
     player = Chipmunk(basic_font)
     for __ in range(ACORN_INIT):
-        Acorn()
+        Acorn(place_rect)
 
     seconds_left = GAME_LENGTH
     pygame.time.set_timer(SECOND_EVENT, 1000)
@@ -88,7 +98,7 @@ def main():
             total_acorns -= 1
         if total_acorns < ACORN_LIMIT:
             if acorn_timer < 0:
-                Acorn()
+                Acorn(place_rect)
                 total_acorns += 1
                 acorn_timer = randint(MIN_ACORN_SPAWN * FPS,
                                       MAX_ACORN_SPAWN * FPS)

@@ -14,7 +14,7 @@ class Nest(pygame.sprite.Sprite):
 
         self._tile_pos = Grid.empty_tiles.pop()
         self.rect = self.image.get_rect()
-        self.rect.topleft = BaseTile.tile2pixel(self._tile_pos)
+        self.rect.topleft = tile2pixel(self._tile_pos)
 
     def update(self):
         """Updates the nest's acorn count."""

@@ -41,7 +41,7 @@ class Chipmunk(pygame.sprite.Sprite):
         self._tile_pos = Grid.empty_tiles.pop()
         self._next_tile_pos = None
         self.rect = self.image.get_rect()
-        self.rect.topleft = BaseTile.tile2pixel(self._tile_pos)
+        self.rect.topleft = tile2pixel(self._tile_pos)
 
         self.acorn_count = 0
         self.nest = Nest(count_font)
@@ -68,7 +68,7 @@ class Chipmunk(pygame.sprite.Sprite):
             self.patch_pos[0] = self._progress % self.cycle_len
             self.image = self.sheet.get_patch(self.patch_pos)
             self._progress += 1
-            if self.rect.topleft == BaseTile.tile2pixel(self._next_tile_pos):
+            if self.rect.topleft == tile2pixel(self._next_tile_pos):
                 self._progress = 0
                 self._tile_pos = self._next_tile_pos
                 self._next_tile_pos = None
