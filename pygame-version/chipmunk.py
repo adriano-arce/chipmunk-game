@@ -28,20 +28,16 @@ class Chipmunk(pygame.sprite.Sprite):
     assert (TILE.height // speed) % (cycle_len + 1) == 0,\
         "TILE.height must be divisible by cycle_len + 1."
 
-    def __init__(self, count_font):
-        pygame.sprite.Sprite.__init__(self, self.groups)
-
+    def __init__(self, place_rect, count_font):
+        # Initialize the rect's position before inserting into any groups.
         self.sheet = SpriteSheet(Chipmunk.file_name, Chipmunk.patch_size)
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
-        self._progress = 0
         self.image = self.sheet.get_patch(self.patch_pos)
+        self.rect = place_rect(self.image.get_rect())
+
+        pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.dir_queue = deque()
-        self.curr_dir = None
-        self._tile_pos = Grid.empty_tiles.pop()
-        self._next_tile_pos = None
-        self.rect = self.image.get_rect()
-        self.rect.topleft = tile2pixel(self._tile_pos)
 
         self.acorn_count = 0
         self.nest = Nest(count_font)
@@ -62,24 +58,14 @@ class Chipmunk(pygame.sprite.Sprite):
         Note:
             This method gets called once per frame.
         """
-        if self._next_tile_pos:
-            self.rect = self.rect.move(self.curr_dir.offset[0] * self.speed,
-                                       self.curr_dir.offset[1] * self.speed)
-            self.patch_pos[0] = self._progress % self.cycle_len
-            self.image = self.sheet.get_patch(self.patch_pos)
-            self._progress += 1
-            if self.rect.topleft == tile2pixel(self._next_tile_pos):
-                self._progress = 0
-                self._tile_pos = self._next_tile_pos
-                self._next_tile_pos = None
-                self.curr_dir = None
-        else:
-            if self.dir_queue:  # The queue is nonempty.
-                self.curr_dir = self.dir_queue[0]
-                self.turn_to(self.curr_dir)
+        if self.dir_queue:  # The queue is nonempty.
+            curr_dir = self.dir_queue[0]
+            self.turn_to(curr_dir)
+            self.rect = self.rect.move(curr_dir.dx * self.speed,
+                                       curr_dir.dy * self.speed)
 
-                next_tile_x = self._tile_pos[0] + self.curr_dir.offset[0]
-                next_tile_y = self._tile_pos[1] + self.curr_dir.offset[1]
-                if 0 <= next_tile_x < GRID.width:
-                    if 0 <= next_tile_y < GRID.height:
-                        self._next_tile_pos = (next_tile_x, next_tile_y)
+            self.patch_pos[0] += 1
+            self.patch_pos[0] %= self.cycle_len
+        else:
+            self.patch_pos[0] = 0
+        self.image = self.sheet.get_patch(self.patch_pos)

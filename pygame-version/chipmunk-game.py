@@ -5,9 +5,6 @@ from nest import Nest
 from tile import Wall, Floor
 
 
-
-
-
 def main():
     """The main entry point."""
     pygame.init()
@@ -29,19 +26,19 @@ def main():
     chipmunks = pygame.sprite.RenderUpdates()
     acorns = pygame.sprite.RenderUpdates()
     nests = pygame.sprite.RenderUpdates()
-    all_others = pygame.sprite.RenderUpdates()
-    Wall.groups = wall_tiles, all_tiles
+    all_collidables = pygame.sprite.RenderUpdates()
+    Wall.groups = wall_tiles, all_tiles, all_collidables
     Floor.groups = floor_tiles, all_tiles
-    Chipmunk.groups = chipmunks, all_others
-    Acorn.groups = acorns, all_others
-    Nest.groups = nests, all_others
+    Chipmunk.groups = chipmunks, all_collidables
+    Acorn.groups = acorns, all_collidables
+    Nest.groups = nests, all_collidables
 
     def place_rect(rect):
         rect.topleft = (
             MARGIN.width  + randint(0, (GRID.width  - 1) * TILE.width),
             MARGIN.height + randint(0, (GRID.height - 1) * TILE.height)
         )
-        other_rects = [s.rect for s in all_others.sprites()]
+        other_rects = [s.rect for s in all_collidables.sprites()]
         while rect.collidelist(other_rects) > -1:
             rect.topleft = (
                 MARGIN.width  + randint(0, (GRID.width  - 1) * TILE.width),
@@ -60,7 +57,7 @@ def main():
     # Set up acorn and player stuff.
     total_acorns = ACORN_INIT
     acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-    player = Chipmunk(basic_font)
+    player = Chipmunk(place_rect, basic_font)
     for __ in range(ACORN_INIT):
         Acorn(place_rect)
 

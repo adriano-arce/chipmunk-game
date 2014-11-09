@@ -53,18 +53,18 @@ red       = (255,   0,   0)
 
 # The above colours shouldn't be directly used (private to this class).
 # Assign the colours to more descriptive names like the following.
-BKGD_COLOUR = dark_gray
-WALL_COLOUR = navy_blue
+BKGD_COLOUR  = dark_gray
+WALL_COLOUR  = navy_blue
 FLOOR_COLOUR = white
-FONT_COLOUR = white
-NEST_COLOUR = red
+FONT_COLOUR  = white
+NEST_COLOUR  = red
 
 # The directions.
-Direction = namedtuple("Direction", "index, keys, offset, abbrev")
-UP    = Direction(0, (   K_UP, K_w), ( 0, -1), "U")
-LEFT  = Direction(1, ( K_LEFT, K_a), (-1,  0), "L")
-DOWN  = Direction(2, ( K_DOWN, K_s), ( 0,  1), "D")
-RIGHT = Direction(3, (K_RIGHT, K_d), ( 1,  0), "R")
+Direction = namedtuple("Direction", "index, keys, dx, dy, abbrev")
+UP    = Direction(0, (   K_UP, K_w),  0, -1, "U")
+LEFT  = Direction(1, ( K_LEFT, K_a), -1,  0, "L")
+DOWN  = Direction(2, ( K_DOWN, K_s),  0,  1, "D")
+RIGHT = Direction(3, (K_RIGHT, K_d),  1,  0, "R")
 ALL_DIRS = (UP, LEFT, DOWN, RIGHT)
 
 # Acorn stuff.
