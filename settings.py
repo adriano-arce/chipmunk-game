@@ -45,19 +45,25 @@ TILE_MAP = [
 assert len(TILE_MAP) == GRID.height, "Map and grid heights must match."
 assert len(TILE_MAP[0]) == GRID.width, "Map and grid widths must match."
 
-#             R    G    B
-white     = (255, 255, 255)
-dark_gray = (100, 100, 100)
-navy_blue = ( 60,  60, 100)
-red       = (255,   0,   0)
+#              R    G    B
+_WHITE     = (255, 255, 255)
+_DARK_GRAY = (100, 100, 100)
+_NAVY_BLUE = ( 60,  60, 100)
+_RED       = (255,   0,   0)
 
 # The above colours shouldn't be directly used (private to this class).
 # Assign the colours to more descriptive names like the following.
-BKGD_COLOUR  = dark_gray
-WALL_COLOUR  = navy_blue
-FLOOR_COLOUR = white
-FONT_COLOUR  = white
-NEST_COLOUR  = red
+BKGD_COLOUR  = _DARK_GRAY
+WALL_COLOUR  = _NAVY_BLUE
+FLOOR_COLOUR = _WHITE
+FONT_COLOUR  = _WHITE
+NEST_COLOUR  = _RED
+
+# Font stuff.
+Font = namedtuple("Font", "name, size")
+_BASIC = Font("consolas", 28)
+MSG_FONT  = _BASIC
+NEST_FONT = _BASIC
 
 # The directions.
 Direction = namedtuple("Direction", "index, keys, dx, dy, abbrev")

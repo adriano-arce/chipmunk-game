@@ -1,6 +1,5 @@
-from grid import *
-from tile import *
 from collections import deque
+from tile import *
 from nest import Nest
 from spritesheet import SpriteSheet
 
@@ -28,7 +27,7 @@ class Chipmunk(pygame.sprite.Sprite):
     assert (TILE.height // speed) % (cycle_len + 1) == 0,\
         "TILE.height must be divisible by cycle_len + 1."
 
-    def __init__(self, place_rect, count_font):
+    def __init__(self, place_rect):
         # Initialize the rect's position before inserting into any groups.
         self.sheet = SpriteSheet(Chipmunk.file_name, Chipmunk.patch_size)
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
@@ -40,7 +39,7 @@ class Chipmunk(pygame.sprite.Sprite):
         self.dir_queue = deque()
 
         self.acorn_count = 0
-        self.nest = Nest(count_font)
+        self.nest = Nest(place_rect)
 
     def turn_to(self, new_dir):
         """Turns towards the given direction, if necessary."""

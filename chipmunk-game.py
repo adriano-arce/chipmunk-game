@@ -16,7 +16,7 @@ def main():
     screen_surf = pygame.display.set_mode(SCREEN)
     pygame.display.set_caption("Chipmunk Game")
 
-    basic_font = pygame.font.SysFont("consolas", 28)
+    msg_font = pygame.font.SysFont(*MSG_FONT)
     fps_clock = pygame.time.Clock()
 
     # Set up the sprite groups.
@@ -57,7 +57,7 @@ def main():
     # Set up acorn and player stuff.
     total_acorns = ACORN_INIT
     acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-    player = Chipmunk(place_rect, basic_font)
+    player = Chipmunk(place_rect)
     for __ in range(ACORN_INIT):
         Acorn(place_rect)
 
@@ -106,10 +106,10 @@ def main():
             player.acorn_count = 0
             nest.update()
         acorn_msg = "Collected Acorns: {}".format(player.acorn_count)
-        acorn_surf = basic_font.render(acorn_msg, True, FONT_COLOUR)
+        acorn_surf = msg_font.render(acorn_msg, True, FONT_COLOUR)
         minutes, seconds = divmod(seconds_left, 60)
         timer_msg = "{}:{:02d}".format(minutes, seconds)
-        timer_surf = basic_font.render(timer_msg, True, FONT_COLOUR)
+        timer_surf = msg_font.render(timer_msg, True, FONT_COLOUR)
         timer_rect = timer_surf.get_rect()
         timer_rect.topright = (SCREEN.width, 0)
 
