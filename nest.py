@@ -4,7 +4,7 @@ from tile import *
 class Nest(pygame.sprite.Sprite):
     def __init__(self, place_rect):
         # Initialize the rect's position before inserting into any groups.
-        self.image = pygame.Surface(TILE)
+        self.image = pygame.Surface(NEST)
         self.rect = place_rect(self.image.get_rect())
 
         pygame.sprite.Sprite.__init__(self, self.groups)

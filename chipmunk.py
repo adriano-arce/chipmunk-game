@@ -17,15 +17,7 @@ class Chipmunk(pygame.sprite.Sprite):
     file_name = "images/fake-chipmunk.png"
     patch_size = (64, 64)  # Each patch is 64 by 64 px.
     cycle_len = 9          # Each cycle takes 9 patches to complete.
-    speed = 7              # The patch travels at 7 pixels per frame.
-    assert TILE.width % speed == 0,\
-        "TILE.width must be evenly divisible by speed."
-    assert TILE.height % speed == 0,\
-        "TILE.height must be evenly divisible by speed."
-    assert (TILE.width // speed) % (cycle_len + 1) == 0,\
-        "TILE.width must be divisible by cycle_len + 1."
-    assert (TILE.height // speed) % (cycle_len + 1) == 0,\
-        "TILE.height must be divisible by cycle_len + 1."
+    speed = 9              # The patch speed in pixels per frame.
 
     def __init__(self, place_rect):
         # Initialize the rect's position before inserting into any groups.
