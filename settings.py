@@ -37,8 +37,8 @@ TILE_MAP = [
     "WWWWWWWWWWWW",
     "W          W",
     "W          W",
-    "W          W",
-    "W          W",
+    "W   WWWW   W",
+    "W   W      W",
     "W          W",
     "W          W",
     "WWWWWWWWWWWW"

@@ -19,7 +19,7 @@ class Chipmunk(pygame.sprite.Sprite):
     cycle_len = 9          # Each cycle takes 9 patches to complete.
     speed = 9              # The patch speed in pixels per frame.
 
-    def __init__(self, place_rect):
+    def __init__(self, place_rect, wall_rects):
         # Initialize the rect's position before inserting into any groups.
         self.sheet = SpriteSheet(Chipmunk.file_name, Chipmunk.patch_size)
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
@@ -33,15 +33,35 @@ class Chipmunk(pygame.sprite.Sprite):
         self.acorn_count = 0
         self.nest = Nest(place_rect)
 
+        self.wall_rects = wall_rects
+
     def turn_to(self, new_dir):
         """Turns towards the given direction, if necessary."""
         if self.patch_pos[1] != new_dir.index:
             self.patch_pos[1] = new_dir.index
             self.image = self.sheet.get_patch(self.patch_pos)
 
-    def can_move(self, direction):
-        """Returns True iff the chipmunk can move in the given direction."""
-        pass
+    def move_single_axis(self, dx, dy):
+        self.rect = self.rect.move(dx, dy)
+
+        indices = self.rect.collidelistall(self.wall_rects)
+        if indices:  # There was a collision.
+            other_rects = (self.wall_rects[i] for i in indices)
+            if dx > 0:
+                self.rect.right = min(r.left for r in other_rects)
+            if dx < 0:
+                self.rect.left = max(r.right for r in other_rects)
+            if dy > 0:
+                self.rect.bottom = min(r.top for r in other_rects)
+            if dy < 0:
+                self.rect.top = max(r.bottom for r in other_rects)
+
+    def move(self, dx, dy):
+        # Move each axis separately, checking for collisions both times.
+        if dx != 0:
+            self.move_single_axis(dx, 0)
+        if dy != 0:
+            self.move_single_axis(0, dy)
 
     def update(self):
         """Updates the chipmunk.
@@ -52,11 +72,10 @@ class Chipmunk(pygame.sprite.Sprite):
         if self.dir_queue:  # The queue is nonempty.
             curr_dir = self.dir_queue[0]
             self.turn_to(curr_dir)
-            self.rect = self.rect.move(curr_dir.dx * self.speed,
-                                       curr_dir.dy * self.speed)
-
             self.patch_pos[0] += 1
             self.patch_pos[0] %= self.cycle_len
+
+            self.move(curr_dir.dx * self.speed, curr_dir.dy * self.speed)
         else:
             self.patch_pos[0] = 0
         self.image = self.sheet.get_patch(self.patch_pos)
