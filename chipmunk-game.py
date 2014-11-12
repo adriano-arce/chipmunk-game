@@ -77,6 +77,12 @@ def main():
                 return None
             elif event.type == SECOND_EVENT:
                 seconds_left -= 1
+            elif event.type == MOUSEBUTTONUP:
+                curr_pos = player.rect.center
+                next_pos = event.pos
+                offset = (next_pos[0] - curr_pos[0], next_pos[1] - curr_pos[1])
+                print(curr_pos, next_pos, offset)
+                player.offset_queue.appendleft(offset)
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     return screen_surf, player.nest.acorn_count
@@ -84,12 +90,12 @@ def main():
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
                             # Enqueue the direction.
-                            player.dir_queue.appendleft(direction)
+                            player.offset_queue.appendleft(direction.offset)
             elif event.type == KEYUP:
                 for direction in ALL_DIRS:
                     if event.key in direction.keys:
                         # Remove the direction. Not quite a dequeue.
-                        player.dir_queue.remove(direction)
+                        player.offset_queue.remove(direction.offset)
 
         # Update all the things.
         if seconds_left == 0:
@@ -135,7 +141,7 @@ def main():
 def end_game(screen_surf, acorn_count):
     """The end game screen."""
     # Update all the things.
-    end_font = pygame.font.SysFont("consolas", 48)
+    end_font = pygame.font.SysFont(*END_FONT)
     message = "Game over! Final score: {0}".format(acorn_count)
     text_surf = end_font.render(message, True, FONT_COLOUR)
     text_rect = text_surf.get_rect()

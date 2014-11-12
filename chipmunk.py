@@ -1,4 +1,5 @@
 from collections import deque
+from math import atan2, pi
 from tile import *
 from nest import Nest
 from spritesheet import SpriteSheet
@@ -28,17 +29,28 @@ class Chipmunk(pygame.sprite.Sprite):
 
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.dir_queue = deque()
+        self.offset_queue = deque()
 
         self.acorn_count = 0
         self.nest = Nest(place_rect)
 
         self.wall_rects = wall_rects
 
-    def turn_to(self, new_dir):
-        """Turns towards the given direction, if necessary."""
-        if self.patch_pos[1] != new_dir.index:
-            self.patch_pos[1] = new_dir.index
+    def turn_to(self, dx, dy):
+        """Turns towards the given offset, if necessary."""
+        # In the Cartesian plane, the signs for vertical movement swap.
+        angle = atan2(-dy, dx)
+        if -3*pi/4 <= angle < -pi/4:
+            direction = DOWN
+        elif -pi/4 <= angle < pi/4:
+            direction = RIGHT
+        elif pi/4 <= angle < 3*pi/4:
+            direction = UP
+        else:  # -pi <= angle < -3*pi/4 or 3*pi/4 <= angle <= pi
+            direction = LEFT
+
+        if self.patch_pos[1] != direction.index:
+            self.patch_pos[1] = direction.index
             self.image = self.sheet.get_patch(self.patch_pos)
 
     def move_single_axis(self, dx, dy):
@@ -69,13 +81,13 @@ class Chipmunk(pygame.sprite.Sprite):
         Note:
             This method gets called once per frame.
         """
-        if self.dir_queue:  # The queue is nonempty.
-            curr_dir = self.dir_queue[0]
-            self.turn_to(curr_dir)
+        if self.offset_queue:  # The queue is nonempty.
+            offset = self.offset_queue[0]
+            self.turn_to(*offset)
             self.patch_pos[0] += 1
             self.patch_pos[0] %= self.cycle_len
 
-            self.move(curr_dir.dx * self.speed, curr_dir.dy * self.speed)
+            self.move(offset[0] * self.speed, offset[1] * self.speed)
         else:
             self.patch_pos[0] = 0
         self.image = self.sheet.get_patch(self.patch_pos)

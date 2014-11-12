@@ -2,10 +2,10 @@ from collections import namedtuple
 from pygame.constants import *
 
 
-# Set up the frame rate.
+# Frame rate stuff.
 FPS = 60
 
-# Set up the custom user events.
+# Custom user event stuff.
 SECOND_EVENT = USEREVENT + 1
 GAME_LENGTH = 3 * 60  # 3 minutes long.
 
@@ -17,7 +17,7 @@ GAME_LENGTH = 3 * 60  # 3 minutes long.
 # (TILE.width, TILE.height) is the size of each tile in pixels.
 Size = namedtuple("Size", "width, height")
 ACORN  = Size(30, 30)
-NEST   = Size(60, 60)
+NEST   = Size(50, 50)
 SCREEN = Size(960, 640)
 GRID   = Size(12, 8)
 TILE   = Size(64, 64)
@@ -46,14 +46,12 @@ TILE_MAP = [
 assert len(TILE_MAP) == GRID.height, "Map and grid heights must match."
 assert len(TILE_MAP[0]) == GRID.width, "Map and grid widths must match."
 
-#              R    G    B
-_WHITE     = (255, 255, 255)
-_DARK_GRAY = (100, 100, 100)
-_NAVY_BLUE = ( 60,  60, 100)
-_RED       = (255,   0,   0)
-
-# The above colours shouldn't be directly used (private to this class).
-# Assign the colours to more descriptive names like the following.
+# Colour stuff.
+Colour = namedtuple("Colour", "red, green, blue")
+_WHITE     = Colour(255, 255, 255)
+_DARK_GRAY = Colour(100, 100, 100)
+_NAVY_BLUE = Colour( 60,  60, 100)
+_RED       = Colour(255,   0,   0)
 BKGD_COLOUR  = _DARK_GRAY
 WALL_COLOUR  = _NAVY_BLUE
 FLOOR_COLOUR = _WHITE
@@ -63,15 +61,17 @@ NEST_COLOUR  = _RED
 # Font stuff.
 Font = namedtuple("Font", "name, size")
 _BASIC = Font("consolas", 28)
+_FINAL = Font("consolas", 48)
 MSG_FONT  = _BASIC
 NEST_FONT = _BASIC
+END_FONT  = _FINAL
 
-# The directions.
-Direction = namedtuple("Direction", "index, keys, dx, dy, abbrev")
-UP    = Direction(0, (   K_UP, K_w),  0, -1, "U")
-LEFT  = Direction(1, ( K_LEFT, K_a), -1,  0, "L")
-DOWN  = Direction(2, ( K_DOWN, K_s),  0,  1, "D")
-RIGHT = Direction(3, (K_RIGHT, K_d),  1,  0, "R")
+# Direction stuff.
+Direction = namedtuple("Direction", "index, keys, offset, abbrev")
+UP    = Direction(0, (   K_UP, K_w), ( 0, -1), "U")
+LEFT  = Direction(1, ( K_LEFT, K_a), (-1,  0), "L")
+DOWN  = Direction(2, ( K_DOWN, K_s), ( 0,  1), "D")
+RIGHT = Direction(3, (K_RIGHT, K_d), ( 1,  0), "R")
 ALL_DIRS = (UP, LEFT, DOWN, RIGHT)
 
 # Acorn stuff.
