@@ -82,7 +82,7 @@ def main():
                 next_pos = event.pos
                 offset = (next_pos[0] - curr_pos[0], next_pos[1] - curr_pos[1])
                 print(curr_pos, next_pos, offset)
-                player.offset_queue.appendleft(offset)
+                # player.offset_queue.appendleft(offset)
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     return screen_surf, player.nest.acorn_count
