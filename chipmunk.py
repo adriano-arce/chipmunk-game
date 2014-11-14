@@ -1,5 +1,5 @@
 from collections import deque
-from math import atan2, pi
+from math import atan2, pi, hypot
 from tile import *
 from nest import Nest
 from spritesheet import SpriteSheet
@@ -19,6 +19,7 @@ class Chipmunk(pygame.sprite.Sprite):
     patch_size = (64, 64)  # Each patch is 64 by 64 px.
     cycle_len = 9          # Each cycle takes 9 patches to complete.
     speed = 9              # The patch speed in pixels per frame.
+    assert speed > 0, "Speed must be positive."
 
     def __init__(self, place_rect, wall_rects):
         # Initialize the rect's position before inserting into any groups.
@@ -30,6 +31,7 @@ class Chipmunk(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.is_pressed = [False] * len(ALL_DIRS)
+        self.target_pos = None
 
         self.acorn_count = 0
         self.nest = Nest(place_rect)
@@ -75,14 +77,24 @@ class Chipmunk(pygame.sprite.Sprite):
         if dy != 0:
             self.move_single_axis(0, dy)
 
-    def compute_offset(self):
-        dx = dy = 0
-        for index, pressed in enumerate(self.is_pressed):
-            if pressed:
-                direction = ALL_DIRS[index]
-                dx += direction.offset[0]
-                dy += direction.offset[1]
-        return dx, dy
+    def get_offset(self):
+        if self.target_pos:
+            (curr_x, curr_y) = self.rect.center
+            (next_x, next_y) = self.target_pos
+            (dx, dy) = (next_x - curr_x, next_y - curr_y)
+        else:
+            dx = dy = 0
+            for index, pressed in enumerate(self.is_pressed):
+                if pressed:
+                    direction = ALL_DIRS[index]
+                    dx += direction.offset[0] * self.speed
+                    dy += direction.offset[1] * self.speed
+
+        dr = hypot(dx, dy)
+        if dr <= self.speed: # We're close enough.
+            self.target_pos = None
+            return dx, dy
+        return dx * self.speed / dr, dy * self.speed / dr
 
     def update(self):
         """Updates the chipmunk.
@@ -90,7 +102,7 @@ class Chipmunk(pygame.sprite.Sprite):
         Note:
             This method gets called once per frame.
         """
-        (dx, dy) = self.compute_offset()
+        (dx, dy) = self.get_offset()
         if (dx, dy) != (0, 0):
             angle = atan2(-dy, dx)
             self.turn_to(angle)
@@ -98,7 +110,7 @@ class Chipmunk(pygame.sprite.Sprite):
             self.patch_pos[0] += 1
             self.patch_pos[0] %= self.cycle_len
 
-            self.move(self.speed * dx, self.speed * dy)
+            self.move(dx, dy)
         else:
             self.patch_pos[0] = 0
         self.image = self.sheet.get_patch(self.patch_pos)
