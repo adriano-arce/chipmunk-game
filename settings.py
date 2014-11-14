@@ -18,8 +18,8 @@ GAME_LENGTH = 3 * 60  # 3 minutes long.
 Size = namedtuple("Size", "width, height")
 ACORN  = Size(30, 30)
 NEST   = Size(50, 50)
-SCREEN = Size(960, 640)
-GRID   = Size(12, 8)
+SCREEN = Size(1240, 900)
+GRID   = Size(16, 12)
 TILE   = Size(64, 64)
 MARGIN = Size(
     (SCREEN.width  - GRID.width  * TILE.width) // 2,
@@ -34,14 +34,18 @@ assert MARGIN.height > 0, "Grid is too high for the screen."
 
 # The grid's tile map. Each W is a wall.
 TILE_MAP = [
-    "WWWWWWWWWWWW",
-    "W          W",
-    "W          W",
-    "W   WWWW   W",
-    "W   W      W",
-    "W          W",
-    "W          W",
-    "WWWWWWWWWWWW"
+    "WWWWWWWWWWWWWWWW",
+    "W              W",
+    "W              W",
+    "W              W",
+    "W   WWWW       W",
+    "W   W          W",
+    "W   W          W",
+    "W   W          W",
+    "W              W",
+    "W              W",
+    "W              W",
+    "WWWWWWWWWWWWWWWW"
 ]
 assert len(TILE_MAP) == GRID.height, "Map and grid heights must match."
 assert len(TILE_MAP[0]) == GRID.width, "Map and grid widths must match."

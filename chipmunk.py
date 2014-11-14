@@ -29,17 +29,16 @@ class Chipmunk(pygame.sprite.Sprite):
 
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.offset_queue = deque()
+        self.is_pressed = [False] * len(ALL_DIRS)
 
         self.acorn_count = 0
         self.nest = Nest(place_rect)
 
         self.wall_rects = wall_rects
 
-    def turn_to(self, dx, dy):
-        """Turns towards the given offset, if necessary."""
+    def turn_to(self, angle):
+        """Turns towards the given angle, if necessary."""
         # In the Cartesian plane, the signs for vertical movement swap.
-        angle = atan2(-dy, dx)
         if -3*pi/4 <= angle < -pi/4:
             direction = DOWN
         elif -pi/4 <= angle < pi/4:
@@ -54,6 +53,7 @@ class Chipmunk(pygame.sprite.Sprite):
             self.image = self.sheet.get_patch(self.patch_pos)
 
     def move_single_axis(self, dx, dy):
+        """Moves in a single axis, checking for collisions."""
         self.rect = self.rect.move(dx, dy)
 
         indices = self.rect.collidelistall(self.wall_rects)
@@ -69,11 +69,20 @@ class Chipmunk(pygame.sprite.Sprite):
                 self.rect.top = max(r.bottom for r in other_rects)
 
     def move(self, dx, dy):
-        # Move each axis separately, checking for collisions both times.
+        """Moves each axis separately, checking for collisions both times."""
         if dx != 0:
             self.move_single_axis(dx, 0)
         if dy != 0:
             self.move_single_axis(0, dy)
+
+    def compute_offset(self):
+        dx = dy = 0
+        for index, pressed in enumerate(self.is_pressed):
+            if pressed:
+                direction = ALL_DIRS[index]
+                dx += direction.offset[0]
+                dy += direction.offset[1]
+        return dx, dy
 
     def update(self):
         """Updates the chipmunk.
@@ -81,13 +90,15 @@ class Chipmunk(pygame.sprite.Sprite):
         Note:
             This method gets called once per frame.
         """
-        if self.offset_queue:  # The queue is nonempty.
-            offset = self.offset_queue[0]
-            self.turn_to(*offset)
+        (dx, dy) = self.compute_offset()
+        if (dx, dy) != (0, 0):
+            angle = atan2(-dy, dx)
+            self.turn_to(angle)
+
             self.patch_pos[0] += 1
             self.patch_pos[0] %= self.cycle_len
 
-            self.move(offset[0] * self.speed, offset[1] * self.speed)
+            self.move(self.speed * dx, self.speed * dy)
         else:
             self.patch_pos[0] = 0
         self.image = self.sheet.get_patch(self.patch_pos)

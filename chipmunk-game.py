@@ -33,7 +33,7 @@ def main():
     Nest.groups = nests, all_collidables
     Chipmunk.groups = chipmunks, all_collidables
 
-    # NOTE: This only relies on get_collidable_rects().
+    # NOTE: This only relies on all_collidables.
     # TODO: Consider moving this into a base sprite class?
     def place_rect(rect):
         rect.topleft = (
@@ -55,6 +55,8 @@ def main():
                 Wall((x, y))
             elif col == " ":
                 Floor((x, y))
+            else:
+                raise IOError("Tile map parsing error!")
 
     # Cache the wall rects in a list. Assumes that walls don't change.
     wall_rects = [w.rect for w in wall_tiles.sprites()]
@@ -66,6 +68,7 @@ def main():
     for __ in range(ACORN_INIT):
         Acorn(place_rect)
 
+    # Set up timing stuff.
     seconds_left = GAME_LENGTH
     pygame.time.set_timer(SECOND_EVENT, 1000)
 
@@ -82,20 +85,17 @@ def main():
                 next_pos = event.pos
                 offset = (next_pos[0] - curr_pos[0], next_pos[1] - curr_pos[1])
                 print(curr_pos, next_pos, offset)
-                # player.offset_queue.appendleft(offset)
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     return screen_surf, player.nest.acorn_count
                 else:
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
-                            # Enqueue the direction.
-                            player.offset_queue.appendleft(direction.offset)
+                            player.is_pressed[direction.index] = True
             elif event.type == KEYUP:
                 for direction in ALL_DIRS:
                     if event.key in direction.keys:
-                        # Remove the direction. Not quite a dequeue.
-                        player.offset_queue.remove(direction.offset)
+                        player.is_pressed[direction.index] = False
 
         # Update all the things.
         if seconds_left == 0:
