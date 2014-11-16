@@ -10,4 +10,4 @@ class Acorn(pygame.sprite.Sprite):
         self.image = Acorn.image.convert_alpha()
         self.rect = place_rect(self.image.get_rect())
 
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)

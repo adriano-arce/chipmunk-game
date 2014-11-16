@@ -1,5 +1,6 @@
 from collections import deque
 from math import atan2, pi, hypot
+from pygame.rect import Rect
 from tile import *
 from nest import Nest
 from spritesheet import SpriteSheet
@@ -16,19 +17,18 @@ class Chipmunk(pygame.sprite.Sprite):
     # RIGHT0, RIGHT1, ..., RIGHT8 #
     ###############################
     file_name = "images/fake-chipmunk.png"
-    patch_size = (64, 64)  # Each patch is 64 by 64 px.
     cycle_len = 9          # Each cycle takes 9 patches to complete.
     speed = 9              # The patch speed in pixels per frame.
     assert speed > 0, "Speed must be positive."
 
     def __init__(self, place_rect, wall_rects):
         # Initialize the rect's position before inserting into any groups.
-        self.sheet = SpriteSheet(Chipmunk.file_name, Chipmunk.patch_size)
+        self.sheet = SpriteSheet(Chipmunk.file_name, CHIP_PATCH)
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
         self.image = self.sheet.get_patch(self.patch_pos)
         self.rect = place_rect(self.image.get_rect())
 
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
 
         self.is_pressed = [False] * len(ALL_DIRS)
         self.target_pos = None
@@ -40,7 +40,6 @@ class Chipmunk(pygame.sprite.Sprite):
 
     def turn_to(self, angle):
         """Turns towards the given angle, if necessary."""
-        # In the Cartesian plane, the signs for vertical movement swap.
         if -3*pi/4 <= angle < -pi/4:
             direction = DOWN
         elif -pi/4 <= angle < pi/4:
@@ -56,7 +55,7 @@ class Chipmunk(pygame.sprite.Sprite):
 
     def move_single_axis(self, dx, dy):
         """Moves in a single axis, checking for collisions."""
-        self.rect = self.rect.move(dx, dy)
+        self.rect.move_ip(dx, dy)
 
         indices = self.rect.collidelistall(self.wall_rects)
         if indices:  # There was a collision.
@@ -104,6 +103,7 @@ class Chipmunk(pygame.sprite.Sprite):
         """
         (dx, dy) = self.get_offset()
         if (dx, dy) != (0, 0):
+            # In the Cartesian plane, the signs for vertical movement swap.
             angle = atan2(-dy, dx)
             self.turn_to(angle)
 

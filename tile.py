@@ -11,7 +11,7 @@ def tile2pixel(tile_pos):
 
 class BaseTile(pygame.sprite.Sprite):
     def __init__(self, colour, tile_pos):
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
 
         self.image = pygame.Surface(TILE)
         self.image.fill(colour)
@@ -23,9 +23,9 @@ class BaseTile(pygame.sprite.Sprite):
 
 class Wall(BaseTile):
     def __init__(self, tile_pos):
-        BaseTile.__init__(self, WALL_COLOUR, tile_pos)
+        super().__init__(WALL_COLOUR, tile_pos)
 
 
 class Floor(BaseTile):
     def __init__(self, tile_pos):
-        BaseTile.__init__(self, FLOOR_COLOUR, tile_pos)
+        super().__init__(FLOOR_COLOUR, tile_pos)

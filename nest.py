@@ -7,7 +7,7 @@ class Nest(pygame.sprite.Sprite):
         self.image = pygame.Surface(NEST)
         self.rect = place_rect(self.image.get_rect())
 
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
         self.acorn_count = 0
         self.font = pygame.font.SysFont(*NEST_FONT)
         self.update()
