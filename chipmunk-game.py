@@ -99,10 +99,11 @@ def main():
         if seconds_left == 0:
             return screen_surf, player.nest.acorn_count
         player.update()
-        # TODO: Check for collisions via hitbox instead of rect.
-        for __ in pygame.sprite.spritecollide(player, acorns, True):
-            player.acorn_count += 1
-            total_acorns -= 1
+        for acorn in acorns.sprites():
+            if player.hitbox.colliderect(acorn.rect):
+                player.acorn_count += 1
+                total_acorns -= 1
+                acorn.kill()
         if total_acorns < ACORN_LIMIT:
             if acorn_timer < 0:
                 Acorn(place_rect)
@@ -111,11 +112,11 @@ def main():
                                       MAX_ACORN_SPAWN * FPS)
             else:
                 acorn_timer -= 1
-        # TODO: Check for collisions via hitbox instead of rect.
-        for nest in pygame.sprite.spritecollide(player, nests, False):
-            nest.acorn_count += player.acorn_count
-            player.acorn_count = 0
-            nest.update()
+        for nest in nests.sprites():
+            if player.hitbox.colliderect(nest.rect):
+                nest.acorn_count += player.acorn_count
+                player.acorn_count = 0
+                nest.update()
         acorn_msg = "Collected Acorns: {}".format(player.acorn_count)
         acorn_surf = msg_font.render(acorn_msg, True, FONT_COLOUR)
         minutes, seconds = divmod(seconds_left, 60)

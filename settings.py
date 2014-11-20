@@ -16,7 +16,7 @@ GAME_LENGTH = 3 * 60  # 3 minutes long.
 #     0 <= y < GRID.height
 # (TILE.width, TILE.height) is the size of each tile in pixels.
 Size = namedtuple("Size", "width, height")
-CHIP_HITBOX = Size(14, 36)
+CHIP_HITBOX = Size(24, 50)
 CHIP_PATCH  = Size(64, 64)
 ACORN       = Size(30, 30)
 NEST        = Size(50, 50)

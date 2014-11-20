@@ -27,6 +27,8 @@ class Chipmunk(pygame.sprite.Sprite):
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
         self.image = self.sheet.get_patch(self.patch_pos)
         self.rect = place_rect(self.image.get_rect())
+        self.hitbox = Rect((0, 0), CHIP_HITBOX)
+        self.hitbox.midbottom = self.rect.midbottom
 
         super().__init__(self.groups)
 
@@ -56,23 +58,21 @@ class Chipmunk(pygame.sprite.Sprite):
     def move_single_axis(self, dx, dy):
         """Moves in a single axis, checking for collisions."""
         self.rect.move_ip(dx, dy)
+        self.hitbox.midbottom = self.rect.midbottom
 
-        hitbox = Rect((0, 0), CHIP_HITBOX)
-        hitbox.center = self.rect.center
-
-        indices = hitbox.collidelistall(self.wall_rects)
+        indices = self.hitbox.collidelistall(self.wall_rects)
         if indices:  # There was a collision.
             other_rects = (self.wall_rects[i] for i in indices)
             if dx > 0:
-                hitbox.right = min(r.left for r in other_rects)
+                self.hitbox.right = min(r.left for r in other_rects)
             if dx < 0:
-                hitbox.left = max(r.right for r in other_rects)
+                self.hitbox.left = max(r.right for r in other_rects)
             if dy > 0:
-                hitbox.bottom = min(r.top for r in other_rects)
+                self.hitbox.bottom = min(r.top for r in other_rects)
             if dy < 0:
-                hitbox.top = max(r.bottom for r in other_rects)
+                self.hitbox.top = max(r.bottom for r in other_rects)
 
-        self.rect.center = hitbox.center
+        self.rect.midbottom = self.hitbox.midbottom
 
     def move(self, dx, dy):
         """Moves each axis separately, checking for collisions both times."""
