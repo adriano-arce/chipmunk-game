@@ -73,6 +73,7 @@ def main():
     pygame.time.set_timer(SECOND_EVENT, 1000)
 
     # The main game loop. Each iteration of this loop is called a frame.
+    # TODO: Encapsulate the stuff in this loop better.
     while True:
         # The event handling loop.
         for event in pygame.event.get():
@@ -98,6 +99,7 @@ def main():
         if seconds_left == 0:
             return screen_surf, player.nest.acorn_count
         player.update()
+        # TODO: Check for collisions via hitbox instead of rect.
         for __ in pygame.sprite.spritecollide(player, acorns, True):
             player.acorn_count += 1
             total_acorns -= 1
@@ -109,6 +111,7 @@ def main():
                                       MAX_ACORN_SPAWN * FPS)
             else:
                 acorn_timer -= 1
+        # TODO: Check for collisions via hitbox instead of rect.
         for nest in pygame.sprite.spritecollide(player, nests, False):
             nest.acorn_count += player.acorn_count
             player.acorn_count = 0

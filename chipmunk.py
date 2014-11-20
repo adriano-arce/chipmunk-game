@@ -57,17 +57,22 @@ class Chipmunk(pygame.sprite.Sprite):
         """Moves in a single axis, checking for collisions."""
         self.rect.move_ip(dx, dy)
 
-        indices = self.rect.collidelistall(self.wall_rects)
+        hitbox = Rect((0, 0), CHIP_HITBOX)
+        hitbox.center = self.rect.center
+
+        indices = hitbox.collidelistall(self.wall_rects)
         if indices:  # There was a collision.
             other_rects = (self.wall_rects[i] for i in indices)
             if dx > 0:
-                self.rect.right = min(r.left for r in other_rects)
+                hitbox.right = min(r.left for r in other_rects)
             if dx < 0:
-                self.rect.left = max(r.right for r in other_rects)
+                hitbox.left = max(r.right for r in other_rects)
             if dy > 0:
-                self.rect.bottom = min(r.top for r in other_rects)
+                hitbox.bottom = min(r.top for r in other_rects)
             if dy < 0:
-                self.rect.top = max(r.bottom for r in other_rects)
+                hitbox.top = max(r.bottom for r in other_rects)
+
+        self.rect.center = hitbox.center
 
     def move(self, dx, dy):
         """Moves each axis separately, checking for collisions both times."""
