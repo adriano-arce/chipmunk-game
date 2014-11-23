@@ -16,14 +16,14 @@ class Chipmunk(pygame.sprite.Sprite):
     #  DOWN0,  DOWN1, ...,  DOWN8 #
     # RIGHT0, RIGHT1, ..., RIGHT8 #
     ###############################
-    file_name = "images/fake-chipmunk.png"
-    cycle_len = 9          # Each cycle takes 9 patches to complete.
-    speed = 9              # The patch speed in pixels per frame.
+    FILE_NAME = "images/fake-chipmunk.png"
+    CYCLE_LEN = 9  # Each cycle takes 9 patches to complete.
+    speed = 9      # The patch speed in pixels per frame.
     assert speed > 0, "Speed must be positive."
 
     def __init__(self, place_rect, wall_rects):
         # Initialize the rect's position before inserting into any groups.
-        self.sheet = SpriteSheet(Chipmunk.file_name, CHIP_PATCH)
+        self.sheet = SpriteSheet(Chipmunk.FILE_NAME, CHIP_PATCH)
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
         self.image = self.sheet.get_patch(self.patch_pos)
         self.rect = place_rect(self.image.get_rect())
@@ -111,11 +111,8 @@ class Chipmunk(pygame.sprite.Sprite):
             # In the Cartesian plane, the signs for vertical movement swap.
             angle = atan2(-dy, dx)
             self.turn_to(angle)
-
-            self.patch_pos[0] += 1
-            self.patch_pos[0] %= self.cycle_len
-
             self.move(dx, dy)
+            self.patch_pos[0] = (self.patch_pos[0] + 1) % self.CYCLE_LEN
         else:
             self.patch_pos[0] = 0
         self.image = self.sheet.get_patch(self.patch_pos)

@@ -82,7 +82,8 @@ def main():
             elif event.type == SECOND_EVENT:
                 seconds_left -= 1
             elif event.type == MOUSEBUTTONUP:
-                player.target_pos = event.pos
+                if event.button == 1: # Left click.
+                    player.target_pos = event.pos
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     return screen_surf, player.nest.acorn_count
