@@ -1,0 +1,13 @@
+Run game.exe
+
+
+As Host:
+Start server.py
+Auto enter server information
+Run client.py same as Client now
+
+As Client:
+Enter server information
+Run client.py 
+Each movement sends information to server
+server echos all movements to all other clients besides the sender
