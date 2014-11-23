@@ -1,4 +1,3 @@
-from collections import deque
 from math import atan2, pi, hypot
 from pygame.rect import Rect
 from tile import *
@@ -18,10 +17,8 @@ class Chipmunk(pygame.sprite.Sprite):
     ###############################
     FILE_NAME = "images/fake-chipmunk.png"
     CYCLE_LEN = 9  # Each cycle takes 9 patches to complete.
-    speed = 9      # The patch speed in pixels per frame.
-    assert speed > 0, "Speed must be positive."
 
-    def __init__(self, place_rect, wall_rects):
+    def __init__(self, place_rect, wall_rects, input_comp):
         # Initialize the rect's position before inserting into any groups.
         self.sheet = SpriteSheet(Chipmunk.FILE_NAME, CHIP_PATCH)
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
@@ -32,13 +29,13 @@ class Chipmunk(pygame.sprite.Sprite):
 
         super().__init__(self.groups)
 
-        self.is_pressed = [False] * len(ALL_DIRS)
-        self.target_pos = None
-
         self.acorn_count = 0
         self.nest = Nest(place_rect)
 
         self.wall_rects = wall_rects
+
+        self.input_comp = input_comp
+        self.velocity = (0, 0)
 
     def turn_to(self, angle):
         """Turns towards the given angle, if necessary."""
@@ -81,34 +78,17 @@ class Chipmunk(pygame.sprite.Sprite):
         if dy != 0:
             self.move_single_axis(0, dy)
 
-    def get_offset(self):
-        if self.target_pos:
-            (curr_x, curr_y) = self.rect.center
-            (next_x, next_y) = self.target_pos
-            (dx, dy) = (next_x - curr_x, next_y - curr_y)
-        else:
-            dx = dy = 0
-            for index, pressed in enumerate(self.is_pressed):
-                if pressed:
-                    direction = ALL_DIRS[index]
-                    dx += direction.offset[0] * self.speed
-                    dy += direction.offset[1] * self.speed
-
-        dr = hypot(dx, dy)
-        if dr <= self.speed: # We're close enough.
-            self.target_pos = None
-            return dx, dy
-        return dx * self.speed / dr, dy * self.speed / dr
-
     def update(self):
         """Updates the chipmunk.
 
         Note:
             This method gets called once per frame.
         """
-        (dx, dy) = self.get_offset()
-        if (dx, dy) != (0, 0):
+        self.input_comp.update(self)
+
+        if self.velocity != (0, 0):
             # In the Cartesian plane, the signs for vertical movement swap.
+            (dx, dy) = self.velocity
             angle = atan2(-dy, dx)
             self.turn_to(angle)
             self.move(dx, dy)

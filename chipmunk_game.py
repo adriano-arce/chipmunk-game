@@ -3,6 +3,7 @@ from chipmunk import *
 from acorn import Acorn
 from nest import Nest
 from tile import Wall, Floor
+from input_component import InputComponent
 
 
 def main():
@@ -64,7 +65,7 @@ def main():
     # Set up acorn and player stuff.
     total_acorns = ACORN_INIT
     acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-    player = Chipmunk(place_rect, wall_rects)
+    player = Chipmunk(place_rect, wall_rects, InputComponent())
     for __ in range(ACORN_INIT):
         Acorn(place_rect)
 
@@ -82,19 +83,19 @@ def main():
             elif event.type == SECOND_EVENT:
                 seconds_left -= 1
             elif event.type == MOUSEBUTTONUP:
-                if event.button == 1: # Left click.
-                    player.target_pos = event.pos
+                if event.button == 1:  # Left click.
+                    player.input_comp.target_pos = event.pos
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     return screen_surf, player.nest.acorn_count
                 else:
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
-                            player.is_pressed[direction.index] = True
+                            player.input_comp.is_pressed[direction.index] = True
             elif event.type == KEYUP:
                 for direction in ALL_DIRS:
                     if event.key in direction.keys:
-                        player.is_pressed[direction.index] = False
+                        player.input_comp.is_pressed[direction.index] = False
 
         # Update all the things.
         if seconds_left == 0:
