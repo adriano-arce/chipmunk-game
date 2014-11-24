@@ -18,8 +18,7 @@ class Chipmunk(pygame.sprite.Sprite):
     FILE_NAME = "images/fake-chipmunk.png"
     CYCLE_LEN = 9  # Each cycle takes 9 patches to complete.
 
-    def __init__(self, place_rect, wall_rects,
-                 input_comp, physics_comp):
+    def __init__(self, place_rect, wall_rects, input_comp, physics_comp):
         # Initialize the rect's position before inserting into any groups.
         self.sheet = SpriteSheet(Chipmunk.FILE_NAME, CHIP_PATCH)
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
