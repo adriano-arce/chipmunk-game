@@ -146,7 +146,7 @@ class World(object):
         Note:
             Each iteration of this loop is called a frame.
         """
-        while self.mode == WorldMode.run:
+        while self.mode is WorldMode.run:
             self.handle_events()
             self.update()
             self.draw()
@@ -171,12 +171,12 @@ class World(object):
         pygame.display.update()
 
         # The main game loop.
-        while self.mode == WorldMode.end:
+        while self.mode is WorldMode.end:
             self.handle_events()
 
 if __name__ == "__main__":
     world = World()
     world.run()
-    if world.mode == WorldMode.end:
+    if world.mode is WorldMode.end:
         world.end()
     pygame.quit()
