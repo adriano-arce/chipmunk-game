@@ -1,15 +1,23 @@
+from enum import Enum
 from random import randint
+
 from chipmunk import *
 from acorn import Acorn
+from graphics_component import GraphicsComponent
 from nest import Nest
 from physics_component import PhysicsComponent
 from tile import Wall, Floor
 from input_component import InputComponent
 
 
+# noinspection PyArgumentList
+WorldMode = Enum("WorldMode", "run, end, quit")
+
+
 class World(object):
     def __init__(self):
         pygame.init()
+        self.mode = WorldMode.run
 
         # Icon should be loaded before mode is set.
         icon = pygame.image.load("images/fake-icon.png")
@@ -45,14 +53,11 @@ class World(object):
                 else:
                     raise IOError("Tile map parsing error!")
 
-        # Cache the wall rects in a list. Assumes that walls don't change.
-        wall_rects = [w.rect for w in self.wall_tiles.sprites()]
-
         # Set up acorn and player stuff.
         self.total_acorns = ACORN_INIT
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-        self.player = Chipmunk(self.place_rect,
-                               InputComponent(), PhysicsComponent())
+        self.player = Chipmunk(self.place_rect, InputComponent(),
+                               PhysicsComponent(), GraphicsComponent())
         for __ in range(ACORN_INIT):
             Acorn(self.place_rect)
 
@@ -67,9 +72,8 @@ class World(object):
         self.timer_surf = self.msg_font.render(self.timer_msg, True, FONT_COLOUR)
         self.timer_rect = self.timer_surf.get_rect()
 
-    # NOTE: This only relies on self.all_collidables.
-    # TODO: Consider moving this into a base sprite class?
     def place_rect(self, rect):
+        """Randomly places the rect in the world in some valid tile."""
         rect.topleft = (
             MARGIN.width  + randint(0, (GRID.width  - 1) * TILE.width),
             MARGIN.height + randint(0, (GRID.height - 1) * TILE.height)
@@ -84,11 +88,10 @@ class World(object):
 
     def handle_events(self):
         """Handles the events."""
-        done = False
         player_input = self.player.input_comp
         for event in pygame.event.get():
             if event.type == QUIT:
-                done = True
+                self.mode = WorldMode.quit
             elif event.type == SECOND_EVENT:
                 self.seconds_left -= 1
             elif event.type == MOUSEBUTTONUP:
@@ -96,7 +99,7 @@ class World(object):
                     player_input.target_pos = event.pos
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    done = True
+                    self.mode = WorldMode.end
                 else:
                     for direction in ALL_DIRS:
                         if event.key in direction.keys:
@@ -105,12 +108,11 @@ class World(object):
                 for direction in ALL_DIRS:
                     if event.key in direction.keys:
                         player_input.is_pressed[direction.index] = False
-        return done
 
     def update(self):
         """Updates all the things."""
         if self.seconds_left == 0:
-            return self.player.acorn_count
+            self.mode = WorldMode.end
         self.player.update(self)
         if self.total_acorns < ACORN_LIMIT:
             if self.acorn_timer < 0:
@@ -144,14 +146,15 @@ class World(object):
         Note:
             Each iteration of this loop is called a frame.
         """
-        while not self.handle_events():
+        while self.mode == WorldMode.run:
+            self.handle_events()
             self.update()
             self.draw()
             pygame.display.update()
             self.fps_clock.tick(FPS)
 
-    def end_game(self):
-        """The end game screen."""
+    def end(self):
+        """Displays the end game screen."""
         # Update all the things.
         end_font = pygame.font.SysFont(*END_FONT)
         final_score = self.player.nest.acorn_count
@@ -168,14 +171,12 @@ class World(object):
         pygame.display.update()
 
         # The main game loop.
-        done = False
-        while not done:
-            done = self.handle_events()
+        while self.mode == WorldMode.end:
+            self.handle_events()
 
 if __name__ == "__main__":
     world = World()
     world.run()
-    world.end_game()
-
-    # Close the window on terminating the main game loop.
+    if world.mode == WorldMode.end:
+        world.end()
     pygame.quit()
