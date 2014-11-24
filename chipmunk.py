@@ -1,4 +1,4 @@
-from math import atan2, pi, hypot
+from math import atan2, pi
 from pygame.rect import Rect
 from tile import *
 from nest import Nest
@@ -18,7 +18,8 @@ class Chipmunk(pygame.sprite.Sprite):
     FILE_NAME = "images/fake-chipmunk.png"
     CYCLE_LEN = 9  # Each cycle takes 9 patches to complete.
 
-    def __init__(self, place_rect, wall_rects, input_comp):
+    def __init__(self, place_rect, wall_rects,
+                 input_comp, physics_comp):
         # Initialize the rect's position before inserting into any groups.
         self.sheet = SpriteSheet(Chipmunk.FILE_NAME, CHIP_PATCH)
         self.patch_pos = [0, 2]  # Initially facing down, at DOWN0.
@@ -34,8 +35,9 @@ class Chipmunk(pygame.sprite.Sprite):
 
         self.wall_rects = wall_rects
 
-        self.input_comp = input_comp
         self.velocity = (0, 0)
+        self.input_comp = input_comp
+        self.physics_comp = physics_comp
 
     def turn_to(self, angle):
         """Turns towards the given angle, if necessary."""
@@ -85,6 +87,7 @@ class Chipmunk(pygame.sprite.Sprite):
             This method gets called once per frame.
         """
         self.input_comp.update(self)
+        self.physics_comp.update(self)
 
         if self.velocity != (0, 0):
             # In the Cartesian plane, the signs for vertical movement swap.
