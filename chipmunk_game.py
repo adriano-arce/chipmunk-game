@@ -51,7 +51,7 @@ class World(object):
         # Set up acorn and player stuff.
         self.total_acorns = ACORN_INIT
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-        self.player = Chipmunk(self.place_rect, wall_rects,
+        self.player = Chipmunk(self.place_rect,
                                InputComponent(), PhysicsComponent())
         for __ in range(ACORN_INIT):
             Acorn(self.place_rect)
@@ -67,7 +67,7 @@ class World(object):
         self.timer_surf = self.msg_font.render(self.timer_msg, True, FONT_COLOUR)
         self.timer_rect = self.timer_surf.get_rect()
 
-     # NOTE: This only relies on self.all_collidables.
+    # NOTE: This only relies on self.all_collidables.
     # TODO: Consider moving this into a base sprite class?
     def place_rect(self, rect):
         rect.topleft = (
@@ -111,12 +111,7 @@ class World(object):
         """Updates all the things."""
         if self.seconds_left == 0:
             return self.player.acorn_count
-        self.player.update()
-        for acorn in self.acorns.sprites():
-            if self.player.hitbox.colliderect(acorn.rect):
-                self.player.acorn_count += 1
-                self.total_acorns -= 1
-                acorn.kill()
+        self.player.update(self)
         if self.total_acorns < ACORN_LIMIT:
             if self.acorn_timer < 0:
                 Acorn(self.place_rect)
@@ -125,11 +120,7 @@ class World(object):
                                            MAX_ACORN_SPAWN * FPS)
             else:
                 self.acorn_timer -= 1
-        for nest in self.nests.sprites():
-            if self.player.hitbox.colliderect(nest.rect):
-                nest.acorn_count += self.player.acorn_count
-                self.player.acorn_count = 0
-                nest.update()
+
         self.acorn_msg = "Collected acorns: {}".format(self.player.acorn_count)
         self.acorn_surf = self.msg_font.render(self.acorn_msg, True, FONT_COLOUR)
         self.timer_msg = "{}:{:02d}".format(*divmod(self.seconds_left, 60))
@@ -163,7 +154,8 @@ class World(object):
         """The end game screen."""
         # Update all the things.
         end_font = pygame.font.SysFont(*END_FONT)
-        message = "Game over! Final score: {0}".format(self.player.acorn_count)
+        final_score = self.player.nest.acorn_count
+        message = "Game over! Final score: {0}".format(final_score)
         text_surf = end_font.render(message, True, FONT_COLOUR)
         text_rect = text_surf.get_rect()
         text_rect.center = (SCREEN.width // 2, SCREEN.height // 2)
