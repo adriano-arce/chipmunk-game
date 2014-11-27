@@ -1,5 +1,5 @@
 from math import atan2, pi
-from spritesheet import SpriteSheet
+from sprite_sheet import SpriteSheet
 from tile import *
 
 
