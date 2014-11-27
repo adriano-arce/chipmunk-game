@@ -16,8 +16,6 @@ GAME_LENGTH = 3 * 60  # 3 minutes long.
 #     0 <= y < GRID.height
 # (TILE.width, TILE.height) is the size of each tile in pixels.
 Size = namedtuple("Size", "width, height")
-CHIP_HITBOX = Size(24, 50)
-CHIP_PATCH  = Size(64, 64)
 ACORN       = Size(30, 30)
 NEST        = Size(50, 50)
 SCREEN      = Size(1240, 900)
@@ -85,3 +83,18 @@ ACORN_INIT = 3
 ACORN_LIMIT = 10
 MIN_ACORN_SPAWN = 0.5
 MAX_ACORN_SPAWN = 1.5
+
+# Chipmunk sprite sheet stuff.
+###############################
+# Order matches ALL_DIRS.     #
+###############################
+#    UP0,    UP1, ...,    UP8 #
+#  LEFT0,  LEFT1, ...,  LEFT8 #
+#  DOWN0,  DOWN1, ...,  DOWN8 #
+# RIGHT0, RIGHT1, ..., RIGHT8 #
+###############################
+CHIP_HITBOX = Size(24, 50)
+CHIP_PATCH  = Size(64, 64)
+CHIP_FILENAME = "images/fake-chipmunk.png"
+CHIP_CYCLE_LEN = 9           # Each cycle takes 9 patches to complete.
+CHIP_INIT_PATCH_POS = [0, 2] # Initially facing down, at DOWN0.
