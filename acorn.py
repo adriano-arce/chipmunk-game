@@ -1,4 +1,5 @@
-from tile import *
+import pygame
+from settings import *
 
 
 class Acorn(pygame.sprite.Sprite):

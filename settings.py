@@ -52,13 +52,14 @@ assert len(TILE_MAP[0]) == GRID.width, "Map and grid widths must match."
 
 # Colour stuff.
 Colour = namedtuple("Colour", "red, green, blue")
+_BEIGE     = Colour(245, 245, 220)
 _WHITE     = Colour(255, 255, 255)
 _DARK_GRAY = Colour(100, 100, 100)
 _NAVY_BLUE = Colour( 60,  60, 100)
 _RED       = Colour(255,   0,   0)
 BKGD_COLOUR  = _DARK_GRAY
 WALL_COLOUR  = _NAVY_BLUE
-FLOOR_COLOUR = _WHITE
+FLOOR_COLOUR = _BEIGE
 FONT_COLOUR  = _WHITE
 NEST_COLOUR  = _RED
 
@@ -96,5 +97,6 @@ MAX_ACORN_SPAWN = 1.5
 CHIP_HITBOX = Size(24, 50)
 CHIP_PATCH  = Size(64, 64)
 CHIP_FILENAME = "images/fake-chipmunk.png"
-CHIP_CYCLE_LEN = 9           # Each cycle takes 9 patches to complete.
-CHIP_INIT_PATCH_POS = [0, 2] # Initially facing down, at DOWN0.
+CHIP_CYCLE_LEN = 9            # The number of patches per cycle.
+CHIP_INIT_PATCH_POS = [0, 2]  # Initially facing down, at DOWN0.
+CHIP_INIT_SPEED = 9           # Speed in pixels per frame.

@@ -6,7 +6,7 @@ class InputComponent(object):
     def __init__(self):
         self.is_pressed = [False] * len(ALL_DIRS)
         self.target_pos = None
-        self.speed = 9  # Patch speed in pixels per frame.
+        self.speed = CHIP_INIT_SPEED
         assert self.speed > 0, "Speed must be positive."
 
     def update(self, chipmunk):
