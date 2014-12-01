@@ -28,4 +28,4 @@ class InputComponent(object):
             self.target_pos = None
             chipmunk.velocity = dx, dy
         else:
-            chipmunk.velocity = dx * self.speed / dr, dy * self.speed / dr
+            chipmunk.velocity = dx * self.speed/dr, dy * self.speed/dr

@@ -54,7 +54,6 @@ class World(object):
                     raise IOError("Tile map parsing error!")
 
         # Set up acorn and player stuff.
-        self.total_acorns = ACORN_INIT
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
         self.player = Chipmunk(self.place_rect, InputComponent(),
                                PhysicsComponent(), GraphicsComponent())
@@ -78,7 +77,7 @@ class World(object):
             MARGIN.width  + randint(0, (GRID.width  - 1) * TILE.width),
             MARGIN.height + randint(0, (GRID.height - 1) * TILE.height)
         )
-        other_rects = [s.rect for s in self.all_collidables.sprites()]
+        other_rects = [s.rect for s in self.all_collidables]
         while rect.collidelist(other_rects) > -1:
             rect.topleft = (
                 MARGIN.width  + randint(0, (GRID.width  - 1) * TILE.width),
@@ -114,10 +113,9 @@ class World(object):
         if self.seconds_left == 0:
             self.mode = WorldMode.end
         self.player.update(self)
-        if self.total_acorns < ACORN_LIMIT:
+        if len(self.acorns) < ACORN_LIMIT:
             if self.acorn_timer < 0:
                 Acorn(self.place_rect)
-                self.total_acorns += 1
                 self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS,
                                            MAX_ACORN_SPAWN * FPS)
             else:

@@ -8,23 +8,22 @@ class PhysicsComponent(object):
 
     def update(self, chipmunk, world):
         """Updates the chipmunk's position and resolves collisions."""
-        # Move each axis separately, checking for collisions both times."
+        # Move each axis separately, checking for collisions both times.
         (dx, dy) = chipmunk.velocity
-        wall_rects = [w.rect for w in world.wall_tiles.sprites()]
+        wall_rects = [w.rect for w in world.wall_tiles]
         if dx != 0:
             self.move_single_axis(dx, 0, chipmunk.rect, wall_rects)
         if dy != 0:
             self.move_single_axis(0, dy, chipmunk.rect, wall_rects)
 
         # Check for acorn collisions.
-        for acorn in world.acorns.sprites():
+        for acorn in world.acorns:
             if self.hitbox.colliderect(acorn.rect):
                 chipmunk.acorn_count += 1
-                world.total_acorns -= 1
                 acorn.kill()
 
         # Check for nest collisions.
-        for nest in world.nests.sprites():
+        for nest in world.nests:
             if self.hitbox.colliderect(nest.rect):
                 nest.acorn_count += chipmunk.acorn_count
                 chipmunk.acorn_count = 0
