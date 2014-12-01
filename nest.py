@@ -2,12 +2,15 @@ from tile import *
 
 
 class Nest(pygame.sprite.Sprite):
+    groups = tuple()
+
     def __init__(self, place_rect):
         # Initialize the rect's position before inserting into any groups.
         self.image = pygame.Surface(NEST)
         self.rect = place_rect(self.image.get_rect())
 
-        super().__init__(self.groups)
+        super().__init__(self.__class__.groups)
+
         self.acorn_count = 0
         self.font = pygame.font.SysFont(*NEST_FONT)
         self.update()

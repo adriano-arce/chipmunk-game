@@ -3,12 +3,14 @@ from nest import Nest
 
 
 class Chipmunk(pygame.sprite.Sprite):
+    groups = tuple()
+
     def __init__(self, place_rect, input_comp, physics_comp, graphics_comp):
         # Initialize the rect's position before inserting into any groups.
         self.image = graphics_comp.get_image()
         self.rect = place_rect(self.image.get_rect())
 
-        super().__init__(self.groups)
+        super().__init__(self.__class__.groups)
 
         self.acorn_count = 0
         self.nest = Nest(place_rect)

@@ -10,8 +10,10 @@ def tile2pixel(tile_pos):
 
 
 class BaseTile(pygame.sprite.Sprite):
+    groups = tuple()
+
     def __init__(self, colour, tile_pos):
-        super().__init__(self.groups)
+        super().__init__(self.__class__.groups)
 
         self.image = pygame.Surface(TILE)
         self.image.fill(colour)
