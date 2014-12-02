@@ -6,6 +6,7 @@ from acorn import Acorn
 from graphics_component import GraphicsComponent
 from nest import Nest
 from physics_component import PhysicsComponent
+from sprite_pool import SpritePool
 from tile import Wall, Floor
 from input_component import InputComponent
 
@@ -54,11 +55,12 @@ class World(object):
                     raise IOError("Tile map parsing error!")
 
         # Set up acorn and player stuff.
+        self.acorn_pool = SpritePool(Acorn, self.place_rect)
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
         self.player = Chipmunk(self.place_rect, InputComponent(),
                                PhysicsComponent(), GraphicsComponent())
         for __ in range(ACORN_INIT):
-            Acorn(self.place_rect)
+            self.acorn_pool.check_out()
 
         # Set up timing stuff.
         self.seconds_left = GAME_LENGTH
@@ -115,7 +117,7 @@ class World(object):
         self.player.update(self)
         if len(self.acorns) < ACORN_LIMIT:
             if self.acorn_timer < 0:
-                Acorn(self.place_rect)
+                self.acorn_pool.check_out()
                 self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS,
                                            MAX_ACORN_SPAWN * FPS)
             else:

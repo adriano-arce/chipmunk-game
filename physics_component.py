@@ -20,7 +20,7 @@ class PhysicsComponent(object):
         for acorn in world.acorns:
             if self.hitbox.colliderect(acorn.rect):
                 chipmunk.acorn_count += 1
-                acorn.kill()
+                world.acorn_pool.check_in(acorn)
 
         # Check for nest collisions.
         for nest in world.nests:
