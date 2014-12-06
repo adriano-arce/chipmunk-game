@@ -1,5 +1,5 @@
 import pygame
-from settings import *
+from settings import ACORN
 
 
 class Acorn(pygame.sprite.Sprite):

@@ -1,4 +1,5 @@
-from tile import *
+import pygame
+from settings import NEST, NEST_FONT, FONT_COLOUR, NEST_COLOUR
 
 
 class Nest(pygame.sprite.Sprite):

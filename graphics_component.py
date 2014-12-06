@@ -1,6 +1,6 @@
 from math import atan2, pi
+from settings import *
 from sprite_sheet import SpriteSheet
-from tile import *
 
 
 class GraphicsComponent(object):

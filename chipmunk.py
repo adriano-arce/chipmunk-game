@@ -1,4 +1,4 @@
-from tile import *
+import pygame
 from nest import Nest
 
 

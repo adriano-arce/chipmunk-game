@@ -1,32 +1,26 @@
 from math import hypot
-from tile import *
 
 
 class InputComponent(object):
-    def __init__(self):
-        self.is_pressed = [False] * len(ALL_DIRS)
+    def __init__(self, speed):
+        self.speed = speed
         self.next_pos = None
-        self.throw_pos = None
-        self.speed = CHIP_INIT_SPEED
-        assert self.speed > 0, "Speed must be positive."
 
-    def update(self, chipmunk):
-        """Updates the given chipmunk's velocity."""
+    def get_offset(self, curr_x, curr_y):
+        """Gets the position offset (or None if no mouse input)."""
+        offset = None
         if self.next_pos:
-            (curr_x, curr_y) = chipmunk.rect.center
             (next_x, next_y) = self.next_pos
-            (dx, dy) = (next_x - curr_x, next_y - curr_y)
-        else:
-            dx = dy = 0
-            for index, pressed in enumerate(self.is_pressed):
-                if pressed:
-                    direction = ALL_DIRS[index]
-                    dx += direction.offset[0] * self.speed
-                    dy += direction.offset[1] * self.speed
+            offset = (next_x - curr_x, next_y - curr_y)
+        return offset
+
+    def update(self, sprite):
+        """Updates the given sprite's velocity."""
+        (dx, dy) = self.get_offset(*sprite.rect.center)
 
         dr = hypot(dx, dy)
         if dr <= self.speed:  # We're close enough.
             self.next_pos = None
-            chipmunk.velocity = dx, dy
+            sprite.velocity = dx, dy
         else:
-            chipmunk.velocity = dx * self.speed/dr, dy * self.speed/dr
+            sprite.velocity = dx * self.speed/dr, dy * self.speed/dr

@@ -1,14 +1,16 @@
 from enum import Enum
 from random import randint
+import pygame
 
-from chipmunk import *
 from acorn import Acorn
+from chipmunk import Chipmunk
 from graphics_component import GraphicsComponent
 from nest import Nest
 from physics_component import PhysicsComponent
+from player_input_component import PlayerInputComponent
+from settings import *
 from sprite_pool import SpritePool
 from tile import Wall, Floor
-from input_component import InputComponent
 
 
 # noinspection PyArgumentList
@@ -57,7 +59,7 @@ class World(object):
         # Set up acorn and player stuff.
         self.acorn_pool = SpritePool(Acorn, self.place_rect)
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-        self.player = Chipmunk(self.place_rect, InputComponent(),
+        self.player = Chipmunk(self.place_rect, PlayerInputComponent(),
                                PhysicsComponent(), GraphicsComponent())
         for __ in range(ACORN_INIT):
             self.acorn_pool.check_out()

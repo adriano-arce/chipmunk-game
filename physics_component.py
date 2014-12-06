@@ -1,5 +1,5 @@
 from pygame.rect import Rect
-from tile import *
+from settings import CHIP_HITBOX
 
 
 class PhysicsComponent(object):
