@@ -5,15 +5,16 @@ from tile import *
 class InputComponent(object):
     def __init__(self):
         self.is_pressed = [False] * len(ALL_DIRS)
-        self.target_pos = None
+        self.next_pos = None
+        self.throw_pos = None
         self.speed = CHIP_INIT_SPEED
         assert self.speed > 0, "Speed must be positive."
 
     def update(self, chipmunk):
         """Updates the given chipmunk's velocity."""
-        if self.target_pos:
+        if self.next_pos:
             (curr_x, curr_y) = chipmunk.rect.center
-            (next_x, next_y) = self.target_pos
+            (next_x, next_y) = self.next_pos
             (dx, dy) = (next_x - curr_x, next_y - curr_y)
         else:
             dx = dy = 0
@@ -25,7 +26,7 @@ class InputComponent(object):
 
         dr = hypot(dx, dy)
         if dr <= self.speed:  # We're close enough.
-            self.target_pos = None
+            self.next_pos = None
             chipmunk.velocity = dx, dy
         else:
             chipmunk.velocity = dx * self.speed/dr, dy * self.speed/dr

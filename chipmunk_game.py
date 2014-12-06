@@ -96,8 +96,10 @@ class World(object):
             elif event.type == SECOND_EVENT:
                 self.seconds_left -= 1
             elif event.type == MOUSEBUTTONUP:
-                if event.button == 1:  # Left click.
-                    player_input.target_pos = event.pos
+                if event.button == 1:  # Left click for moving.
+                    player_input.next_pos = event.pos
+                elif event.button == 2:  # Right click for throwing.
+                    player_input.throw_pos = event.pos
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     self.mode = WorldMode.end
@@ -112,9 +114,13 @@ class World(object):
 
     def update(self):
         """Updates all the things."""
+        # TODO: Should we measure seconds_left and acorn_timer in frames or secs?
         if self.seconds_left == 0:
             self.mode = WorldMode.end
+
         self.player.update(self)
+
+        # TODO: Encapsulate this.
         if len(self.acorns) < ACORN_LIMIT:
             if self.acorn_timer < 0:
                 self.acorn_pool.check_out()
@@ -123,6 +129,7 @@ class World(object):
             else:
                 self.acorn_timer -= 1
 
+        # TODO: Encapsulate this.
         self.acorn_msg = "Collected acorns: {}".format(self.player.acorn_count)
         self.acorn_surf = self.msg_font.render(self.acorn_msg, True, FONT_COLOUR)
         self.timer_msg = "{}:{:02d}".format(*divmod(self.seconds_left, 60))

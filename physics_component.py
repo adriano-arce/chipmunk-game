@@ -7,14 +7,10 @@ class PhysicsComponent(object):
         self.hitbox = Rect((0, 0), CHIP_HITBOX)
 
     def update(self, chipmunk, world):
-        """Updates the chipmunk's position and resolves collisions."""
-        # Move each axis separately, checking for collisions both times.
+        """Updates the chipmunk's position and throws an acorn."""
         (dx, dy) = chipmunk.velocity
         wall_rects = [w.rect for w in world.wall_tiles]
-        if dx != 0:
-            self.move_single_axis(dx, 0, chipmunk.rect, wall_rects)
-        if dy != 0:
-            self.move_single_axis(0, dy, chipmunk.rect, wall_rects)
+        self.move(dx, dy, chipmunk.rect, wall_rects)
 
         # Check for acorn collisions.
         for acorn in world.acorns:
@@ -28,6 +24,17 @@ class PhysicsComponent(object):
                 nest.acorn_count += chipmunk.acorn_count
                 chipmunk.acorn_count = 0
                 nest.update()
+
+        # TODO: Make the components abstract. Reuse for both chipmunks/acorns.
+        # acorn = world.acorn_pool.check_out()
+        # self.throw(acorn, chipmunk.throw_pos)
+
+    def move(self, dx, dy, rect, wall_rects):
+        """Moves each axis separately, checking for wall collisions twice."""
+        if dx != 0:
+            self.move_single_axis(dx, 0, rect, wall_rects)
+        if dy != 0:
+            self.move_single_axis(0, dy, rect, wall_rects)
 
     def move_single_axis(self, dx, dy, rect, wall_rects):
         """Moves the rect in a single axis, checking for collisions."""
@@ -47,3 +54,6 @@ class PhysicsComponent(object):
                 self.hitbox.top = max(r.bottom for r in other_rects)
 
         rect.midbottom = self.hitbox.midbottom
+
+    def throw(self, acorn, throw_pos):
+        pass
