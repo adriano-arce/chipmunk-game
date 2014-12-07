@@ -5,8 +5,8 @@ import pygame
 from acorn import Acorn
 from chipmunk import Chipmunk
 from chipmunk_graphics_component import ChipmunkGraphicsComponent
+from chipmunk_physics_component import ChipmunkPhysicsComponent
 from nest import Nest
-from physics_component import PhysicsComponent
 from player_input_component import PlayerInputComponent
 from settings import *
 from sprite_pool import SpritePool
@@ -60,7 +60,8 @@ class World(object):
         self.acorn_pool = SpritePool(Acorn, self.place_rect)
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
         self.player = Chipmunk(self.place_rect, PlayerInputComponent(),
-                               PhysicsComponent(), ChipmunkGraphicsComponent())
+                               ChipmunkPhysicsComponent(),
+                               ChipmunkGraphicsComponent())
         for __ in range(ACORN_INIT):
             self.acorn_pool.check_out()
 

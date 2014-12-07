@@ -1,33 +1,15 @@
 from pygame.rect import Rect
-from settings import CHIP_HITBOX
 
 
 class PhysicsComponent(object):
-    def __init__(self):
-        self.hitbox = Rect((0, 0), CHIP_HITBOX)
+    def __init__(self, hitbox_size):
+        self.hitbox = Rect((0, 0), hitbox_size)
 
-    def update(self, chipmunk, world):
-        """Updates the chipmunk's position and throws an acorn."""
-        (dx, dy) = chipmunk.velocity
+    def update(self, sprite, world):
+        """Updates the sprite's position."""
+        (dx, dy) = sprite.velocity
         wall_rects = [w.rect for w in world.wall_tiles]
-        self.move(dx, dy, chipmunk.rect, wall_rects)
-
-        # Check for acorn collisions.
-        for acorn in world.acorns:
-            if self.hitbox.colliderect(acorn.rect):
-                chipmunk.acorn_count += 1
-                world.acorn_pool.check_in(acorn)
-
-        # Check for nest collisions.
-        for nest in world.nests:
-            if self.hitbox.colliderect(nest.rect):
-                nest.acorn_count += chipmunk.acorn_count
-                chipmunk.acorn_count = 0
-                nest.update()
-
-        # TODO: Make the components abstract. Reuse for both chipmunks/acorns.
-        # acorn = world.acorn_pool.check_out()
-        # self.throw(acorn, chipmunk.throw_pos)
+        self.move(dx, dy, sprite.rect, wall_rects)
 
     def move(self, dx, dy, rect, wall_rects):
         """Moves each axis separately, checking for wall collisions twice."""
@@ -54,6 +36,3 @@ class PhysicsComponent(object):
                 self.hitbox.top = max(r.bottom for r in other_rects)
 
         rect.midbottom = self.hitbox.midbottom
-
-    def throw(self, acorn, throw_pos):
-        pass

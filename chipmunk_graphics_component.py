@@ -7,6 +7,9 @@ class ChipmunkGraphicsComponent(GraphicsComponent):
     def __init__(self):
         super().__init__(CHIP_FILENAME, CHIP_PATCH, CHIP_INIT_PATCH_POS)
 
+    def get_image(self):
+        return self.sheet.get_patch(self.patch_pos)
+
     def update(self, chipmunk):
         if chipmunk.velocity != (0, 0):
             (dx, dy) = chipmunk.velocity
@@ -31,6 +34,3 @@ class ChipmunkGraphicsComponent(GraphicsComponent):
 
         if self.patch_pos[1] != direction.index:
             self.patch_pos[1] = direction.index
-
-    def get_image(self):
-        return self.sheet.get_patch(self.patch_pos)
