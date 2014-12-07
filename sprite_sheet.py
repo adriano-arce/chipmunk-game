@@ -3,8 +3,8 @@ from settings import FLOOR_COLOUR, TILE
 
 
 class SpriteSheet(object):
-    def __init__(self, file_name, patch_size):
-        self.sheet = pygame.image.load(file_name).convert_alpha()
+    def __init__(self, filename, patch_size):
+        self.sheet = pygame.image.load(filename).convert_alpha()
         self.patch_size = patch_size
         self._patch_dict = {}
 

@@ -4,7 +4,7 @@ import pygame
 
 from acorn import Acorn
 from chipmunk import Chipmunk
-from graphics_component import GraphicsComponent
+from chipmunk_graphics_component import ChipmunkGraphicsComponent
 from nest import Nest
 from physics_component import PhysicsComponent
 from player_input_component import PlayerInputComponent
@@ -60,7 +60,7 @@ class World(object):
         self.acorn_pool = SpritePool(Acorn, self.place_rect)
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
         self.player = Chipmunk(self.place_rect, PlayerInputComponent(),
-                               PhysicsComponent(), GraphicsComponent())
+                               PhysicsComponent(), ChipmunkGraphicsComponent())
         for __ in range(ACORN_INIT):
             self.acorn_pool.check_out()
 
@@ -116,7 +116,7 @@ class World(object):
 
     def update(self):
         """Updates all the things."""
-        # TODO: Should we measure seconds_left and acorn_timer in frames or secs?
+        # TODO: Should we measure seconds_left & acorn_timer in frames or secs?
         if self.seconds_left == 0:
             self.mode = WorldMode.end
 
