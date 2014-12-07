@@ -80,10 +80,13 @@ RIGHT = Direction(3, (K_RIGHT, K_d), ( 1,  0), "R")
 ALL_DIRS = (UP, LEFT, DOWN, RIGHT)
 
 # Acorn stuff.
-ACORN_INIT = 3
-ACORN_LIMIT = 10
 MIN_ACORN_SPAWN = 0.5
 MAX_ACORN_SPAWN = 1.5
+ACORN_INIT_COUNT = 3
+ACORN_LIMIT = 10
+ACORN_INIT_SPEED = 20
+ACORN_FILENAME = "images/fake-acorn.png"
+ACORN_PATCH = Size(535, 535)
 
 # Chipmunk sprite sheet stuff.
 ###############################
@@ -98,5 +101,5 @@ CHIP_HITBOX = Size(24, 50)
 CHIP_PATCH  = Size(64, 64)
 CHIP_FILENAME = "images/fake-chipmunk.png"
 CHIP_CYCLE_LEN = 9            # The number of patches per cycle.
-CHIP_INIT_PATCH_POS = [0, 2]  # Initially facing down, at DOWN0.
+CHIP_INIT_PATCH_POS = (0, 2)  # Initially facing down, at DOWN0.
 CHIP_INIT_SPEED = 9           # Speed in pixels per frame.

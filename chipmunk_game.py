@@ -3,10 +3,13 @@ from random import randint
 import pygame
 
 from acorn import Acorn
+from acorn_graphics_component import AcornGraphicsComponent
 from chipmunk import Chipmunk
 from chipmunk_graphics_component import ChipmunkGraphicsComponent
 from chipmunk_physics_component import ChipmunkPhysicsComponent
+from input_component import InputComponent
 from nest import Nest
+from physics_component import PhysicsComponent
 from player_input_component import PlayerInputComponent
 from settings import *
 from sprite_pool import SpritePool
@@ -57,12 +60,15 @@ class World(object):
                     raise IOError("Tile map parsing error!")
 
         # Set up acorn and player stuff.
-        self.acorn_pool = SpritePool(Acorn, self.place_rect)
+        self.acorn_pool = SpritePool(Acorn,
+                                     InputComponent(ACORN_INIT_SPEED),
+                                     PhysicsComponent(ACORN),
+                                     AcornGraphicsComponent(), self.place_rect)
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-        self.player = Chipmunk(self.place_rect, PlayerInputComponent(),
+        self.player = Chipmunk(PlayerInputComponent(),
                                ChipmunkPhysicsComponent(),
-                               ChipmunkGraphicsComponent())
-        for __ in range(ACORN_INIT):
+                               ChipmunkGraphicsComponent(), self.place_rect)
+        for __ in range(ACORN_INIT_COUNT):
             self.acorn_pool.check_out()
 
         # Set up timing stuff.

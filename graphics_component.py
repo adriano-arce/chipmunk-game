@@ -2,8 +2,8 @@ from sprite_sheet import SpriteSheet
 
 
 class GraphicsComponent(object):
-    def __init__(self, filename, patch_size, patch_pos):
-        self.sheet = SpriteSheet(filename, patch_size)
+    def __init__(self, filename, patch_size, final_size, patch_pos):
+        self.sheet = SpriteSheet(filename, patch_size, final_size)
         self.patch_pos = patch_pos
 
     def get_image(self):

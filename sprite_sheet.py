@@ -3,9 +3,10 @@ from settings import FLOOR_COLOUR, TILE
 
 
 class SpriteSheet(object):
-    def __init__(self, filename, patch_size):
+    def __init__(self, filename, patch_size, final_size):
         self.sheet = pygame.image.load(filename).convert_alpha()
         self.patch_size = patch_size
+        self.final_size = final_size
         self._patch_dict = {}
 
     def patch2pixel(self, patch_pos):
@@ -15,10 +16,13 @@ class SpriteSheet(object):
         return left, top
 
     def get_patch(self, patch_pos):
-        """Returns the requested patch image from the sprite sheet."""
-        # Lists aren't hashable, so convert to an immutable tuple.
-        patch_pos = tuple(patch_pos)
+        """Returns the requested patch image from the sprite sheet.
 
+        Args:
+            patch_pos: An immutable tuple that represents the coordinates of the
+                       desired patch in the sprite sheet grid. Don't use a list,
+                       since lists aren't hashable.
+        """
         # Don't do extra work.
         if patch_pos in self._patch_dict:
             return self._patch_dict[patch_pos]
@@ -33,8 +37,10 @@ class SpriteSheet(object):
                    (self.patch2pixel(patch_pos), self.patch_size))
 
         # Set the transparent colour and scale to fit.
+        # TODO: Once the assets have been finalized, we should decide on their
+        # TODO: size. That way, we won't need to scale their size each time.
         patch.set_colorkey(FLOOR_COLOUR)
-        patch = pygame.transform.scale(patch, TILE)
+        patch = pygame.transform.scale(patch, self.final_size)
 
         # Cache and return the patch.
         self._patch_dict[patch_pos] = patch
