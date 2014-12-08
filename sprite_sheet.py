@@ -24,6 +24,7 @@ class SpriteSheet(object):
                        since lists aren't hashable.
         """
         # Don't do extra work.
+        # TODO: Consider using a caching decorator.
         if patch_pos in self._patch_dict:
             return self._patch_dict[patch_pos]
 
@@ -37,8 +38,7 @@ class SpriteSheet(object):
                    (self.patch2pixel(patch_pos), self.patch_size))
 
         # Set the transparent colour and scale to fit.
-        # TODO: Once the assets have been finalized, we should decide on their
-        # TODO: size. That way, we won't need to scale their size each time.
+        # TODO: Scale the assets beforehand, so that we can remove this.
         patch.set_colorkey(FLOOR_COLOUR)
         patch = pygame.transform.scale(patch, self.final_size)
 

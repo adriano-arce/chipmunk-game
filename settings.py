@@ -16,12 +16,12 @@ GAME_LENGTH = 3 * 60  # 3 minutes long.
 #     0 <= y < GRID.height
 # (TILE.width, TILE.height) is the size of each tile in pixels.
 Size = namedtuple("Size", "width, height")
-ACORN       = Size(30, 30)
-NEST        = Size(50, 50)
-SCREEN      = Size(1240, 900)
-GRID        = Size(16, 12)
-TILE        = Size(64, 64)
-MARGIN      = Size(
+ACORN  = Size(30, 30)
+NEST   = Size(50, 50)
+SCREEN = Size(1240, 900)
+GRID   = Size(16, 12)
+TILE   = Size(64, 64)
+MARGIN = Size(
     (SCREEN.width  - GRID.width  * TILE.width) // 2,
     (SCREEN.height - GRID.height * TILE.height) // 2
 )
