@@ -11,7 +11,10 @@ from glob import glob
 from distutils.core import setup
 
 
-data_files = [('images', glob('images/*.*'))]
-setup(console=['chipmunk_game.py'], data_files=data_files, requires=['py2exe'])
+setup(console=['chipmunk_game.py'],
+      data_files=[('imgs', glob('imgs/*.*'))],
+      options={'py2exe': {'bundle_files': 1}},
+      requires=['py2exe'],
+      zipfile=None)
 
 __all__ = ["py2exe"]

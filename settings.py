@@ -85,7 +85,7 @@ MAX_ACORN_SPAWN = 1.5
 ACORN_INIT_COUNT = 3
 ACORN_LIMIT = 10
 ACORN_INIT_SPEED = 20
-ACORN_FILENAME = "images/fake-acorn.png"
+ACORN_FILENAME = "imgs/fake-acorn.png"
 ACORN_PATCH = Size(535, 535)
 
 # Chipmunk sprite sheet stuff.
@@ -99,7 +99,7 @@ ACORN_PATCH = Size(535, 535)
 ###############################
 CHIP_HITBOX = Size(24, 50)
 CHIP_PATCH  = Size(64, 64)
-CHIP_FILENAME = "images/fake-chipmunk.png"
+CHIP_FILENAME = "imgs/fake-chipmunk.png"
 CHIP_CYCLE_LEN = 9            # The number of patches per cycle.
 CHIP_INIT_PATCH_POS = (0, 2)  # Initially facing down, at DOWN0.
 CHIP_INIT_SPEED = 9           # Speed in pixels per frame.

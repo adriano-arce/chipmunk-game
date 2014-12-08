@@ -26,7 +26,7 @@ class World(object):
         self.mode = WorldMode.run
 
         # Icon should be loaded before mode is set.
-        icon = pygame.image.load("images/fake-icon.png")
+        icon = pygame.image.load("imgs/fake-icon.png")
         icon.set_colorkey(FLOOR_COLOUR)
         pygame.display.set_icon(icon)
         self.screen_surf = pygame.display.set_mode(SCREEN)

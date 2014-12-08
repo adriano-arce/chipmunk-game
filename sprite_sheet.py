@@ -1,5 +1,5 @@
 import pygame
-from settings import FLOOR_COLOUR, TILE
+from settings import FLOOR_COLOUR
 
 
 class SpriteSheet(object):
