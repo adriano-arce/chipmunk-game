@@ -8,17 +8,18 @@ class ChipmunkGraphicsComponent(GraphicsComponent):
         super().__init__(CHIP_FILENAME, CHIP_PATCH, TILE, CHIP_INIT_PATCH_POS)
 
     def update(self, chipmunk):
-        (patch_x, patch_y) = self.patch_pos
+        """Updates the chipmunk's patch_pos before updating its image."""
+        (patch_x, patch_y) = self._patch_pos
         if chipmunk.velocity != (0, 0):
             patch_x = (patch_x + 1) % CHIP_CYCLE_LEN
 
             # In the Cartesian plane, the signs for vertical movement swap.
             (dx, dy) = chipmunk.velocity
             angle = atan2(-dy, dx)
-            patch_y = self.turn_to(angle)
+            patch_y = self.__class__.turn_to(angle)
         else:
             patch_x = 0
-        self.patch_pos = (patch_x, patch_y)
+        self._patch_pos = (patch_x, patch_y)
         super().update(chipmunk)
 
     @staticmethod

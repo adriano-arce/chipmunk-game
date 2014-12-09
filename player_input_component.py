@@ -15,7 +15,7 @@ class PlayerInputComponent(InputComponent):
             for index, pressed in enumerate(self.is_pressed):
                 if pressed:
                     direction = ALL_DIRS[index]
-                    dx += direction.offset[0] * self.speed
-                    dy += direction.offset[1] * self.speed
+                    dx += direction.offset[0] * self._speed
+                    dy += direction.offset[1] * self._speed
             offset = (dx, dy)
         return offset

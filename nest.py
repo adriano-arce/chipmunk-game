@@ -2,6 +2,7 @@ import pygame
 from settings import NEST, NEST_FONT, FONT_COLOUR, NEST_COLOUR
 
 
+# TODO: Make this Nest inherit from BaseSprite.
 class Nest(pygame.sprite.Sprite):
     groups = tuple()
 

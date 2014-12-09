@@ -3,14 +3,14 @@ from math import hypot
 
 class InputComponent(object):
     def __init__(self, speed):
-        self.speed = speed
-        self.next_pos = None
+        self._speed = speed
+        self._next_pos = None
 
     def get_offset(self, curr_x, curr_y):
         """Gets the position offset (or None if no mouse input)."""
         offset = None
-        if self.next_pos:
-            (next_x, next_y) = self.next_pos
+        if self._next_pos:
+            (next_x, next_y) = self._next_pos
             offset = (next_x - curr_x, next_y - curr_y)
         return offset
 
@@ -19,8 +19,8 @@ class InputComponent(object):
         (dx, dy) = self.get_offset(*sprite.rect.center)
 
         dr = hypot(dx, dy)
-        if dr <= self.speed:  # We're close enough.
-            self.next_pos = None
+        if dr <= self._speed:  # We're close enough.
+            self._next_pos = None
             sprite.velocity = dx, dy
         else:
-            sprite.velocity = dx * self.speed/dr, dy * self.speed/dr
+            sprite.velocity = dx * self._speed/dr, dy * self._speed/dr

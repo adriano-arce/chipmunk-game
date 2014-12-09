@@ -7,23 +7,25 @@ class SpritePool(object):
         self._graphics_comp = graphics_comp
         self._place_rect = place_rect
         self._pool = list()
-        self.max_size = 0  # For logging purposes only. Not actually used.
+        self._max_size = 0  # For logging purposes only. Not actually used.
 
     def check_out(self):
-        if len(self._pool) > 0:
+        """Checks out a freshly revived sprite."""
+        if self._pool:
             sprite = self._pool.pop()
             print("[{}/{}] Reused a dead sprite.".format(len(self._pool),
-                                                         self.max_size))
+                                                         self._max_size))
         else:
-            self.max_size += 1
+            self._max_size += 1
             sprite = self._sprite_class()
             print("[{}/{}] Created a new sprite.".format(len(self._pool),
-                                                         self.max_size))
+                                                         self._max_size))
 
         sprite.revive(self._input_comp, self._physics_comp,
                       self._graphics_comp, self._place_rect)
         return sprite
 
     def check_in(self, sprite):
+        """Kills and checks in a sprite to the sprite pool."""
         sprite.kill()
         self._pool.append(sprite)
