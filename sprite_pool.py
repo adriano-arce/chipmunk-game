@@ -26,6 +26,6 @@ class SpritePool(object):
         return sprite
 
     def check_in(self, sprite):
-        """Kills and checks in a sprite to the sprite pool."""
+        """Kills then checks in the given sprite to the sprite pool."""
         sprite.kill()
         self._pool.append(sprite)

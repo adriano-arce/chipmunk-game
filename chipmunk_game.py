@@ -108,7 +108,7 @@ class World(object):
                 if event.button == 1:  # Left click for moving.
                     player_input.next_pos = event.pos
                 elif event.button == 2:  # Right click for throwing.
-                    player_input.throw_pos = event.pos
+                    self.player.throw_pos = event.pos
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     self.mode = WorldMode.end

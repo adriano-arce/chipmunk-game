@@ -9,3 +9,4 @@ class Chipmunk(BaseSprite):
 
         self.acorn_count = 0
         self.nest = Nest(place_rect)
+        self.throw_pos = None
