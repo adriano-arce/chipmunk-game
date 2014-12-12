@@ -16,11 +16,13 @@ class BaseSprite(pygame.sprite.Sprite):
 
         self.velocity = None
 
-    def revive(self, input_comp, physics_comp, graphics_comp, place_rect):
+    # TODO: When AI's implemented, revisit whether or not this is good practice.
+    def initialize_components(self):
+        pass
+
+    def revive(self, place_rect):
         """Initializes the rect before inserting this sprite into its groups."""
-        self.input_comp = input_comp
-        self._physics_comp = physics_comp
-        self._graphics_comp = graphics_comp
+        self.initialize_components()
 
         self.image = self._graphics_comp.get_image()
         self.rect = place_rect(self.image.get_rect())

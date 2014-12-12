@@ -1,16 +1,11 @@
 from enum import Enum
 from random import randint
+
 import pygame
 
 from acorn import Acorn
-from acorn_graphics_component import AcornGraphicsComponent
 from chipmunk import Chipmunk
-from chipmunk_graphics_component import ChipmunkGraphicsComponent
-from chipmunk_physics_component import ChipmunkPhysicsComponent
-from input_component import InputComponent
 from nest import Nest
-from physics_component import PhysicsComponent
-from player_input_component import PlayerInputComponent
 from settings import *
 from sprite_pool import SpritePool
 from tile import Wall, Floor
@@ -60,14 +55,9 @@ class World(object):
                     raise IOError("Tile map parsing error!")
 
         # Set up acorn and player stuff.
-        self.acorn_pool = SpritePool(Acorn,
-                                     InputComponent(ACORN_INIT_SPEED),
-                                     PhysicsComponent(ACORN),
-                                     AcornGraphicsComponent(), self.place_rect)
+        self.acorn_pool = SpritePool(Acorn, self.place_rect)
         self.acorn_timer = randint(MIN_ACORN_SPAWN * FPS, MAX_ACORN_SPAWN * FPS)
-        self.player = Chipmunk(PlayerInputComponent(),
-                               ChipmunkPhysicsComponent(),
-                               ChipmunkGraphicsComponent(), self.place_rect)
+        self.player = Chipmunk(self.place_rect)
         for __ in range(ACORN_INIT_COUNT):
             self.acorn_pool.check_out()
 
@@ -107,7 +97,7 @@ class World(object):
             elif event.type == MOUSEBUTTONUP:
                 if event.button == 1:  # Left click for moving.
                     player_input.next_pos = event.pos
-                elif event.button == 2:  # Right click for throwing.
+                elif event.button == 3:  # Right click for throwing.
                     self.player.throw_pos = event.pos
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
@@ -128,6 +118,9 @@ class World(object):
             self.mode = WorldMode.end
 
         self.player.update(self)
+
+        # Update all acorns (in case the player threw any).
+        self.acorns.update(self)
 
         # TODO: Encapsulate this.
         if len(self.acorns) < ACORN_LIMIT:

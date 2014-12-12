@@ -8,7 +8,7 @@ class InputComponent(object):
 
     def get_offset(self, curr_x, curr_y):
         """Gets the position offset (or None if no mouse input)."""
-        offset = None
+        offset = (0, 0)
         if self.next_pos:
             (next_x, next_y) = self.next_pos
             offset = (next_x - curr_x, next_y - curr_y)

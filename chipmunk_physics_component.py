@@ -23,6 +23,9 @@ class ChipmunkPhysicsComponent(PhysicsComponent):
                 chipmunk.acorn_count = 0
                 nest.update()
 
-        # TODO: Make the components abstract. Reuse for both chipmunks/acorns.
-        # acorn = world.acorn_pool.check_out()
-        # self.throw(acorn, chipmunk.throw_pos)
+        # Throw an acorn.
+        # throw_pos = chipmunk.throw_pos
+        # if throw_pos:
+        #     acorn = world.acorn_pool.check_out()
+        #     acorn.rect.center = chipmunk.rect.center
+        #     acorn.input_comp.next_pos = throw_pos
