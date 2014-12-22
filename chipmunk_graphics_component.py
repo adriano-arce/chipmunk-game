@@ -26,7 +26,8 @@ class ChipmunkGraphicsComponent(GraphicsComponent):
     def turn_to(angle):
         """Turns towards the given angle, if necessary.
 
-        Returns the index of the direction, as determined by the given angle.
+        Returns:
+            The index of the direction, as determined by the given angle.
         """
         if -3*pi/4 <= angle < -pi/4:
             direction = DOWN

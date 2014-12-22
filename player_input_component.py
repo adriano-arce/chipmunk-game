@@ -8,7 +8,11 @@ class PlayerInputComponent(InputComponent):
         self.is_pressed = [False] * len(ALL_DIRS)
 
     def get_offset(self, curr_x, curr_y):
-        """Gets the position offset (or None if no mouse/keyboard input)."""
+        """Retrieves the position offset.
+
+        Returns:
+            The position offset.
+        """
         (dx, dy) = super().get_offset(curr_x, curr_y)
         if (dx, dy) == (0, 0):  # If no mouse input, check for keyboard input.
             for index, pressed in enumerate(self.is_pressed):

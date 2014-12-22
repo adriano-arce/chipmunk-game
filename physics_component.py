@@ -16,7 +16,11 @@ class PhysicsComponent(object):
             sprite.input_comp.next_pos = None
 
     def move(self, dx, dy, rect, wall_rects):
-        """Moves each axis separately, checking for wall collisions twice."""
+        """Moves each axis separately, checking for wall collisions twice.
+
+        Returns:
+            True iff a collision (in either axis) occurred.
+        """
         collided_x = collided_y = False
         if dx != 0:
             collided_x = self.move_single_axis(dx, 0, rect, wall_rects)
@@ -25,7 +29,11 @@ class PhysicsComponent(object):
         return collided_x or collided_y
 
     def move_single_axis(self, dx, dy, rect, wall_rects):
-        """Moves the rect in a single axis, checking for collisions."""
+        """Moves the rect in a single axis, checking for collisions.
+
+        Returns:
+            True iff a collision with some wall rectangle occurred.
+        """
         rect.move_ip(dx, dy)
         self.hitbox.midbottom = rect.midbottom
 

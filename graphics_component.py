@@ -7,6 +7,11 @@ class GraphicsComponent(object):
         self._patch_pos = patch_pos
 
     def get_image(self):
+        """Retrieves the sprite's image.
+
+        Returns:
+            The sprite's requested patch image.
+        """
         return self._sheet.get_patch(self._patch_pos)
 
     def update(self, sprite):

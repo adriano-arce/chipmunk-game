@@ -10,18 +10,25 @@ class SpriteSheet(object):
         self._patch_dict = {}
 
     def patch2pixel(self, patch_pos):
-        """Returns the top left pixel position of the given patch."""
+        """Converts a patch position into pixel coordinates.
+
+        Returns:
+            The top left pixel position of the given patch.
+        """
         left = self.patch_size[0] * patch_pos[0]
         top  = self.patch_size[1] * patch_pos[1]
         return left, top
 
     def get_patch(self, patch_pos):
-        """Returns the requested patch image from the sprite sheet.
+        """Retrieves the requested patch image from the sprite sheet.
 
         Args:
             patch_pos: An immutable tuple that represents the coordinates of the
                        desired patch in the sprite sheet grid. Don't use a list,
                        since lists aren't hashable.
+
+        Returns:
+            The requested patch image from the sprite sheet.
         """
         # Don't do extra work.
         # TODO: Consider using a caching decorator.

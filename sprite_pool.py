@@ -6,7 +6,11 @@ class SpritePool(object):
         # self._max_size = 0  # For logging purposes only. Not actually used.
 
     def check_out(self):
-        """Checks out a freshly revived sprite."""
+        """Checks out a freshly revived sprite.
+
+        Returns:
+            A freshly revived sprite.
+        """
         if self._pool:
             sprite = self._pool.pop()
             # print("[{}/{}] Reused a dead sprite.".format(len(self._pool),

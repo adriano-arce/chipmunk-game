@@ -73,7 +73,11 @@ class World(object):
         self.timer_rect = self.timer_surf.get_rect()
 
     def place_rect(self, rect):
-        """Randomly places the rect in the world in some valid tile."""
+        """Randomly places the rect in the world in some valid tile.
+
+        Returns:
+            The randomly placed rect.
+        """
         rect.topleft = (
             MARGIN.width  + randint(0, (GRID.width  - 1) * TILE.width),
             MARGIN.height + randint(0, (GRID.height - 1) * TILE.height)

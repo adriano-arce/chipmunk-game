@@ -7,7 +7,11 @@ class InputComponent(object):
         self.next_pos = None
 
     def get_offset(self, curr_x, curr_y):
-        """Gets the position offset (or None if no mouse input)."""
+        """Retrieves the position offset.
+
+        Returns:
+            The position offset.
+        """
         offset = (0, 0)
         if self.next_pos:
             (next_x, next_y) = self.next_pos
