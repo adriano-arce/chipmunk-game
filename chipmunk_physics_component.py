@@ -12,7 +12,7 @@ class ChipmunkPhysicsComponent(PhysicsComponent):
 
         # Check for acorn collisions.
         for acorn in world.acorns:
-            if self.hitbox.colliderect(acorn.rect):
+            if self.hitbox.colliderect(acorn.rect) and acorn.velocity == (0, 0):
                 chipmunk.acorn_count += 1
                 world.acorn_pool.check_in(acorn)
 
@@ -24,8 +24,10 @@ class ChipmunkPhysicsComponent(PhysicsComponent):
                 nest.update()
 
         # Throw an acorn.
-        # throw_pos = chipmunk.throw_pos
-        # if throw_pos:
-        #     acorn = world.acorn_pool.check_out()
-        #     acorn.rect.center = chipmunk.rect.center
-        #     acorn.input_comp.next_pos = throw_pos
+        if chipmunk.throw_pos and chipmunk.acorn_count > 0:
+            chipmunk.acorn_count -= 1
+            acorn = world.acorn_pool.check_out()
+            acorn.rect.center = chipmunk.rect.center
+            acorn.input_comp.next_pos = chipmunk.throw_pos
+
+        chipmunk.throw_pos = None  # Reset, even if nothing thrown.
