@@ -7,13 +7,13 @@ class PlayerInputComponent(InputComponent):
         super().__init__(CHIP_INIT_SPEED)
         self.is_pressed = [False] * len(ALL_DIRS)
 
-    def get_offset(self, curr_x, curr_y):
+    def _get_offset(self, curr_x, curr_y):
         """Retrieves the position offset.
 
         Returns:
             The position offset.
         """
-        (dx, dy) = super().get_offset(curr_x, curr_y)
+        (dx, dy) = super()._get_offset(curr_x, curr_y)
         if (dx, dy) == (0, 0):  # If no mouse input, check for keyboard input.
             for index, pressed in enumerate(self.is_pressed):
                 if pressed:

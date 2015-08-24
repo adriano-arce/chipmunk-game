@@ -6,7 +6,7 @@ class InputComponent(object):
         self._speed = speed
         self.next_pos = None
 
-    def get_offset(self, curr_x, curr_y):
+    def _get_offset(self, curr_x, curr_y):
         """Retrieves the position offset.
 
         Returns:
@@ -20,7 +20,7 @@ class InputComponent(object):
 
     def update(self, sprite):
         """Updates the given sprite's velocity."""
-        (dx, dy) = self.get_offset(*sprite.rect.center)
+        (dx, dy) = self._get_offset(*sprite.rect.center)
 
         dr = hypot(dx, dy)
         if dr <= self._speed:  # We're close enough.

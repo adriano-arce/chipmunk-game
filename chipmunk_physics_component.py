@@ -12,13 +12,13 @@ class ChipmunkPhysicsComponent(PhysicsComponent):
 
         # Check for acorn collisions.
         for acorn in world.acorns:
-            if self.hitbox.colliderect(acorn.rect) and acorn.velocity == (0, 0):
+            if self._hitbox.colliderect(acorn.rect) and acorn.velocity == (0, 0):
                 chipmunk.acorn_count += 1
                 world.acorn_pool.check_in(acorn)
 
         # Check for nest collisions.
         for nest in world.nests:
-            if self.hitbox.colliderect(nest.rect):
+            if self._hitbox.colliderect(nest.rect):
                 nest.acorn_count += chipmunk.acorn_count
                 chipmunk.acorn_count = 0
                 nest.update()
