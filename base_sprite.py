@@ -18,7 +18,7 @@ class BaseSprite(pygame.sprite.Sprite):
 
     # TODO: When AI's implemented, revisit whether or not this is good practice.
     def initialize_components(self):
-        pass
+        raise NotImplementedError("Derived classes must implement this.")
 
     def revive(self, place_rect):
         """Initializes the rect before inserting this sprite into its groups."""
