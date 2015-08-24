@@ -9,7 +9,7 @@ class SpriteSheet(object):
         self._final_size = final_size
         self._patch_dict = {}
 
-    def patch2pixel(self, patch_pos):
+    def _patch2pixel(self, patch_pos):
         """Converts a patch position into pixel coordinates.
 
         Returns:
@@ -42,7 +42,7 @@ class SpriteSheet(object):
 
         # Copy the patch from the large sheet onto the smaller image.
         patch.blit(self._sheet_surf, (0, 0),
-                   (self.patch2pixel(patch_pos), self._patch_size))
+                   (self._patch2pixel(patch_pos), self._patch_size))
 
         # Set the transparent colour and scale to fit.
         # TODO: Scale the assets beforehand, so that we can remove this.
